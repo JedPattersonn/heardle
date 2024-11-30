@@ -14,9 +14,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Song Slice",
+  title: "Heardle.fun",
   description:
-    "Heardle, but better! Select which artists you would like to play songs by.",
+    "Search for any artist and test your knowledge by guessing their songs from short clips. The faster you guess, the more points you earn!",
 };
 
 export default function RootLayout({

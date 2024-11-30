@@ -28,7 +28,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl font-bold mb-8"
         >
-          SongSlice
+          Heardle.fun
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}

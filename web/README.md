@@ -1,6 +1,6 @@
-# SongSlice
+# Heardle.fun
 
-SongSlice is a music guessing game inspired by Heardle, but with a twist! Search for any artist and test your knowledge by guessing their songs from short clips. The faster you guess, the more points you earn.
+Heardle.fun is a music guessing game inspired by the original Heardle. Search for any artist and test your knowledge by guessing their songs from short clips. The faster you guess, the more points you earn!
 
 ## Features
 
