@@ -87,11 +87,11 @@ export default function Home() {
       </main>
       <footer className="text-center text-sm text-muted-foreground py-4">
         <a
-          href="https://sidekicksoftware.co"
+          href="https://jedpatterson.com"
           target="_blank"
           className="hover:underline"
         >
-          A Side Kick Software product
+          Developed by Jed Patterson
         </a>
       </footer>
     </div>

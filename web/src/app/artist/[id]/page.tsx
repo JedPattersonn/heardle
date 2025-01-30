@@ -50,7 +50,7 @@ export default function ArtistPage(props: { params: Promise<{ id: string }> }) {
           target="_blank"
           className="hover:underline"
         >
-          A Side Kick Software product
+          Developed by Jed Patterson
         </a>
       </footer>
     </div>
