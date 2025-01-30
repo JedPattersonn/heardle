@@ -36,4 +36,39 @@ export const presetArtists: Artist[] = [
       "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages122/v4/08/e5/9e/08e59e63-fd5f-2bd4-62b2-593c0fb3f5c9/92967109-2f7b-43cb-a467-d779246b3302_ami-identity-b7ce039aac2c803c4620ff4ff18920ca-2024-03-06T20-58-51.662Z_cropped.png/300x300bb.jpg",
     genres: ["pop", "r&b"],
   },
+  {
+    id: "278873078",
+    name: "Bruno Mars",
+    imageUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/6d/ad/28/6dad2828-52c4-01dc-8e33-3ad3c05b73fd/pr_source.png/300x300bb.jpg",
+    genres: ["Pop"],
+  },
+  {
+    name: "Bad Bunny",
+    id: "1126808565",
+    imageUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/6c/92/d4/6c92d475-7be5-8b7a-a7d8-fdc3d937629e/mza_9478576998108878943.png/300x300bb.jpg",
+    genres: ["Urbano latino"],
+  },
+  {
+    name: "Kendrick Lamar",
+    id: "368183298",
+    imageUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/Features211/v4/3b/c5/74/3bc5742b-0f79-62ed-b2b0-1b91498ed680/mza_5135978652874976668.png/300x300bb.jpg",
+    genres: ["Hip-Hop/Rap"],
+  },
+  {
+    name: "Morgan Wallen",
+    id: "829142092",
+    imageUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages221/v4/04/9e/d0/049ed0dc-311d-8f9a-b5e9-a8f1df016951/ami-identity-9e8a6aedf0dca3c60ecb0d44b67ae82b-2024-10-17T16-19-39.131Z_cropped.png/300x300bb.jpg",
+    genres: ["Country"],
+  },
+  {
+    name: "Sabrina Carpenter",
+    id: "390647681",
+    imageUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages221/v4/e7/ad/0c/e7ad0c8a-e2ea-f99a-5e48-407d88246d03/58c8344c-52df-4d39-adab-e5934e9cdc49_ami-identity-cc64ebed2010125d7f6cfc205f49983d-2024-06-03T21-39-07.597Z_cropped.png/300x300bb.jpg",
+    genres: ["Pop"],
+  },
 ];
