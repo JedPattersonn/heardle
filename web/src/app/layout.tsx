@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Heardle.fun",
+  title: "Heardle - Guess the song from a short clip",
   description:
     "Search for any artist and test your knowledge by guessing their songs from short clips. The faster you guess, the more points you earn!",
 };
