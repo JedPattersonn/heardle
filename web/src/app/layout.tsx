@@ -19,6 +19,12 @@ export const metadata: Metadata = {
   title: "Heardle - Guess the song from a short clip",
   description:
     "Search for any artist and test your knowledge by guessing their songs from short clips. The faster you guess, the more points you earn!",
+  keywords: [
+    "heardle",
+    "guess the song",
+    "song guessing game",
+    "heardle alternative",
+  ],
 };
 
 export default function RootLayout({
