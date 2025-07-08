@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
-import Head from "next/head";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -25,6 +24,9 @@ export const metadata: Metadata = {
     "song guessing game",
     "heardle alternative",
   ],
+  alternates: {
+    canonical: "https://www.heardle.fun/",
+  },
 };
 
 export default function RootLayout({
@@ -34,9 +36,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <link rel="canonical" href="https://heardle.fun/" />
-      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

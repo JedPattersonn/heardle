@@ -1,11 +1,9 @@
 import { presetArtists } from "@/data/preset-artists";
 import { Metadata } from "next";
 
-export async function generateMetadata(
-  props: {
-    params: Promise<{ id: string }>;
-  }
-): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
   const params = await props.params;
   const artist = presetArtists.find((a) => a.id === params.id);
   if (!artist) return {};
@@ -13,6 +11,9 @@ export async function generateMetadata(
   return {
     title: `${artist.name} Music Quiz - Heardle.fun`,
     description: `Test your ${artist.name} music knowledge! Try to guess their songs from short clips. The faster you guess, the more points you earn!`,
+    alternates: {
+      canonical: `https://www.heardle.fun/artist/${artist.id}`,
+    },
     openGraph: {
       title: `${artist.name} Music Quiz - Heardle.fun`,
       description: `Test your ${artist.name} music knowledge! Try to guess their songs from short clips. The faster you guess, the more points you earn!`,
