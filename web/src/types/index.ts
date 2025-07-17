@@ -46,7 +46,7 @@ export interface Song {
   difficulty: "easy" | "medium" | "hard";
 }
 
-// Game types
+// Enhanced Game types
 export interface GameState {
   currentSong: Song | null;
   isPlaying: boolean;
@@ -54,6 +54,15 @@ export interface GameState {
   maxTime: number;
   guessAttempts: number;
   score: number;
+  streak: number;
+  bestStreak: number;
+  songsCompleted: number;
+  correctGuesses: number;
+  totalGuesses: number;
+  gameStartTime: number;
+  roundStartTime: number;
+  timeBonus: boolean;
+  perfectGame: boolean;
 }
 
 // Search types
