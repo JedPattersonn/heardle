@@ -1,0 +1,563 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		2DC33EF72E29C00400E2CC61 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2DC33EE12E29C00300E2CC61 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DC33EE82E29C00300E2CC61;
+			remoteInfo = Heardle;
+		};
+		2DC33F012E29C00400E2CC61 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2DC33EE12E29C00300E2CC61 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DC33EE82E29C00300E2CC61;
+			remoteInfo = Heardle;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2DC33EE92E29C00300E2CC61 /* Heardle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Heardle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DC33EF62E29C00400E2CC61 /* HeardleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeardleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DC33F002E29C00400E2CC61 /* HeardleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeardleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		2DC33EEB2E29C00300E2CC61 /* Heardle */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Heardle;
+			sourceTree = "<group>";
+		};
+		2DC33EF92E29C00400E2CC61 /* HeardleTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = HeardleTests;
+			sourceTree = "<group>";
+		};
+		2DC33F032E29C00400E2CC61 /* HeardleUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = HeardleUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2DC33EE62E29C00300E2CC61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DC33EF32E29C00400E2CC61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DC33EFD2E29C00400E2CC61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2DC33EE02E29C00300E2CC61 = {
+			isa = PBXGroup;
+			children = (
+				2DC33EEB2E29C00300E2CC61 /* Heardle */,
+				2DC33EF92E29C00400E2CC61 /* HeardleTests */,
+				2DC33F032E29C00400E2CC61 /* HeardleUITests */,
+				2DC33EEA2E29C00300E2CC61 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2DC33EEA2E29C00300E2CC61 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2DC33EE92E29C00300E2CC61 /* Heardle.app */,
+				2DC33EF62E29C00400E2CC61 /* HeardleTests.xctest */,
+				2DC33F002E29C00400E2CC61 /* HeardleUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2DC33EE82E29C00300E2CC61 /* Heardle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2DC33F0A2E29C00400E2CC61 /* Build configuration list for PBXNativeTarget "Heardle" */;
+			buildPhases = (
+				2DC33EE52E29C00300E2CC61 /* Sources */,
+				2DC33EE62E29C00300E2CC61 /* Frameworks */,
+				2DC33EE72E29C00300E2CC61 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2DC33EEB2E29C00300E2CC61 /* Heardle */,
+			);
+			name = Heardle;
+			packageProductDependencies = (
+			);
+			productName = Heardle;
+			productReference = 2DC33EE92E29C00300E2CC61 /* Heardle.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2DC33EF52E29C00400E2CC61 /* HeardleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2DC33F0D2E29C00400E2CC61 /* Build configuration list for PBXNativeTarget "HeardleTests" */;
+			buildPhases = (
+				2DC33EF22E29C00400E2CC61 /* Sources */,
+				2DC33EF32E29C00400E2CC61 /* Frameworks */,
+				2DC33EF42E29C00400E2CC61 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2DC33EF82E29C00400E2CC61 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2DC33EF92E29C00400E2CC61 /* HeardleTests */,
+			);
+			name = HeardleTests;
+			packageProductDependencies = (
+			);
+			productName = HeardleTests;
+			productReference = 2DC33EF62E29C00400E2CC61 /* HeardleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2DC33EFF2E29C00400E2CC61 /* HeardleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2DC33F102E29C00400E2CC61 /* Build configuration list for PBXNativeTarget "HeardleUITests" */;
+			buildPhases = (
+				2DC33EFC2E29C00400E2CC61 /* Sources */,
+				2DC33EFD2E29C00400E2CC61 /* Frameworks */,
+				2DC33EFE2E29C00400E2CC61 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2DC33F022E29C00400E2CC61 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2DC33F032E29C00400E2CC61 /* HeardleUITests */,
+			);
+			name = HeardleUITests;
+			packageProductDependencies = (
+			);
+			productName = HeardleUITests;
+			productReference = 2DC33F002E29C00400E2CC61 /* HeardleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2DC33EE12E29C00300E2CC61 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					2DC33EE82E29C00300E2CC61 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					2DC33EF52E29C00400E2CC61 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 2DC33EE82E29C00300E2CC61;
+					};
+					2DC33EFF2E29C00400E2CC61 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 2DC33EE82E29C00300E2CC61;
+					};
+				};
+			};
+			buildConfigurationList = 2DC33EE42E29C00300E2CC61 /* Build configuration list for PBXProject "Heardle" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2DC33EE02E29C00300E2CC61;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2DC33EEA2E29C00300E2CC61 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2DC33EE82E29C00300E2CC61 /* Heardle */,
+				2DC33EF52E29C00400E2CC61 /* HeardleTests */,
+				2DC33EFF2E29C00400E2CC61 /* HeardleUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2DC33EE72E29C00300E2CC61 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DC33EF42E29C00400E2CC61 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DC33EFE2E29C00400E2CC61 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2DC33EE52E29C00300E2CC61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DC33EF22E29C00400E2CC61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DC33EFC2E29C00400E2CC61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2DC33EF82E29C00400E2CC61 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DC33EE82E29C00300E2CC61 /* Heardle */;
+			targetProxy = 2DC33EF72E29C00400E2CC61 /* PBXContainerItemProxy */;
+		};
+		2DC33F022E29C00400E2CC61 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DC33EE82E29C00300E2CC61 /* Heardle */;
+			targetProxy = 2DC33F012E29C00400E2CC61 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2DC33F082E29C00400E2CC61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = N2UGSFT64P;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2DC33F092E29C00400E2CC61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = N2UGSFT64P;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2DC33F0B2E29C00400E2CC61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N2UGSFT64P;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jedpatterson.Heardle;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2DC33F0C2E29C00400E2CC61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N2UGSFT64P;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jedpatterson.Heardle;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2DC33F0E2E29C00400E2CC61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N2UGSFT64P;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jedpatterson.HeardleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Heardle.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Heardle";
+			};
+			name = Debug;
+		};
+		2DC33F0F2E29C00400E2CC61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N2UGSFT64P;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jedpatterson.HeardleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Heardle.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Heardle";
+			};
+			name = Release;
+		};
+		2DC33F112E29C00400E2CC61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N2UGSFT64P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jedpatterson.HeardleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Heardle;
+			};
+			name = Debug;
+		};
+		2DC33F122E29C00400E2CC61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N2UGSFT64P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jedpatterson.HeardleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Heardle;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2DC33EE42E29C00300E2CC61 /* Build configuration list for PBXProject "Heardle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DC33F082E29C00400E2CC61 /* Debug */,
+				2DC33F092E29C00400E2CC61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2DC33F0A2E29C00400E2CC61 /* Build configuration list for PBXNativeTarget "Heardle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DC33F0B2E29C00400E2CC61 /* Debug */,
+				2DC33F0C2E29C00400E2CC61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2DC33F0D2E29C00400E2CC61 /* Build configuration list for PBXNativeTarget "HeardleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DC33F0E2E29C00400E2CC61 /* Debug */,
+				2DC33F0F2E29C00400E2CC61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2DC33F102E29C00400E2CC61 /* Build configuration list for PBXNativeTarget "HeardleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DC33F112E29C00400E2CC61 /* Debug */,
+				2DC33F122E29C00400E2CC61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2DC33EE12E29C00300E2CC61 /* Project object */;
+}
