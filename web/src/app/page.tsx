@@ -4,8 +4,47 @@ import HomePageClient from "./HomePageClient";
 import Image from "next/image";
 
 export default function Home() {
+  // Generate structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Heardle.fun",
+    description:
+      "Test your music knowledge with Heardle.fun! Search for any artist and try to guess their songs from short clips. The faster you guess, the more points you earn!",
+    url: "https://www.heardle.fun",
+    applicationCategory: "GameApplication",
+    operatingSystem: "Web Browser",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    provider: {
+      "@type": "Organization",
+      name: "Heardle.fun",
+      url: "https://www.heardle.fun",
+    },
+    audience: {
+      "@type": "Audience",
+      audienceType: "Music Fans",
+    },
+    genre: ["Music", "Quiz", "Game"],
+    featureList: [
+      "Search for any artist",
+      "Guess songs from audio clips",
+      "Score points for quick guesses",
+      "Popular artist challenges",
+      "Free to play",
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       <div className="min-h-screen flex flex-col">
         {/* Header with navigation */}
         <header className="bg-background border-b">
@@ -142,10 +181,37 @@ export default function Home() {
               </div>
 
               <div className="text-center mt-12">
-                <p className="text-muted-foreground mb-4">
+                <p className="text-muted-foreground mb-6">
                   Don&apos;t see your favorite artist? Use our search to find
                   any musician!
                 </p>
+
+                {/* Genre Links */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">Browse by Genre</h3>
+                  <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+                    {[
+                      ...new Set(
+                        presetArtists.flatMap((artist) => artist.genres)
+                      ),
+                    ]
+                      .slice(0, 8)
+                      .map((genre) => (
+                        <Link
+                          key={genre}
+                          href={`/genre/${genre.toLowerCase().replace(/\s+/g, "-")}`}
+                          className="px-4 py-2 bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium"
+                          title={`${genre} music quiz - Test your ${genre.toLowerCase()} knowledge`}
+                        >
+                          {genre}
+                        </Link>
+                      ))}
+                  </div>
+                  <p className="text-sm text-muted-foreground mt-4">
+                    Explore music quizzes organized by your favorite genres and
+                    discover new artists!
+                  </p>
+                </div>
               </div>
             </div>
           </section>

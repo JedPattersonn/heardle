@@ -60,10 +60,77 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
           <h1 className="text-4xl font-bold mb-4 text-center">
             {artist.name} Music Quiz
           </h1>
-          <p className="text-lg text-muted-foreground mb-8 text-center max-w-2xl">
+          <p className="text-lg text-muted-foreground mb-4 text-center max-w-2xl">
             Test your knowledge of {artist.name}&apos;s music! Listen to short
             clips and guess the song as quickly as possible to earn more points.
           </p>
+
+          {/* Artist Info Section */}
+          <div className="w-full max-w-4xl mx-auto mb-8">
+            <div className="grid md:grid-cols-2 gap-8 items-start">
+              <div className="text-center md:text-left">
+                <div className="relative w-48 h-48 mx-auto md:mx-0 mb-4 rounded-xl overflow-hidden">
+                  <img
+                    src={artist.imageUrl}
+                    alt={`${artist.name} profile`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
+                  {artist.genres.map((genre) => (
+                    <Link
+                      key={genre}
+                      href={`/genre/${genre.toLowerCase().replace(/\s+/g, "-")}`}
+                      className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm hover:bg-primary hover:text-primary-foreground transition-colors"
+                    >
+                      {genre}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h2 className="text-2xl font-bold mb-3">
+                    About {artist.name}
+                  </h2>
+                  <p className="text-muted-foreground">
+                    Challenge yourself with {artist.name}&apos;s biggest hits
+                    and deep cuts! This{" "}
+                    {artist.genres.join(" & ").toLowerCase()} artist has created
+                    countless memorable tracks that have shaped the music
+                    industry. From chart-topping singles to album favorites,
+                    test your knowledge of {artist.name}&apos;s discography in
+                    this interactive music quiz.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">What to Expect</h3>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>
+                      • Audio clips from {artist.name}&apos;s most popular songs
+                    </li>
+                    <li>• Multiple difficulty levels to challenge all fans</li>
+                    <li>• Points for quick and accurate guesses</li>
+                    <li>• Discover songs you might have missed</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Genre: {artist.genres.join(", ")}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Explore more {artist.genres[0].toLowerCase()} artists and
+                    test your knowledge across different genres. Perfect for
+                    fans of {artist.genres.join(" and ").toLowerCase()} music!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <ArtistGameClient artist={artist} />
         </main>
 
