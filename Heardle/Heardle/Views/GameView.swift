@@ -13,6 +13,8 @@ struct GameView: View {
     @State private var showingGuessPicker = false
     @State private var historyManager = GameHistoryManager()
     @State private var gameHasBeenSaved = false
+    @State private var showingEndGameOptions = false
+    @State private var showingGameReview = false
     
     private let apiService = APIService.shared
     private let audioService = AudioService.shared
@@ -45,8 +47,13 @@ struct GameView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if gameState.gamePhase != .setup {
                         Button("End Game") {
-                            saveGameIfNeeded()
-                            onDismiss()
+                            // Show options if there are song results to review
+                            if !gameState.songResults.isEmpty {
+                                showingEndGameOptions = true
+                            } else {
+                                saveGameIfNeeded()
+                                onDismiss()
+                            }
                         }
                     }
                 }
@@ -60,6 +67,27 @@ struct GameView: View {
                 await audioService.stop()
             }
             saveGameIfNeeded()
+        }
+        .confirmationDialog("End Game", isPresented: $showingEndGameOptions) {
+            Button("Review Game") {
+                saveGameIfNeeded()
+                showingGameReview = true
+            }
+            
+            Button("Exit Without Review") {
+                saveGameIfNeeded()
+                onDismiss()
+            }
+            
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Would you like to review your game before leaving?")
+        }
+        .sheet(isPresented: $showingGameReview) {
+            GameReviewView(gameState: gameState, artist: artist)
+                .onDisappear {
+                    onDismiss()
+                }
         }
     }
     
@@ -477,7 +505,7 @@ struct GameView: View {
     
     // MARK: - Results View
     private var resultsView: some View {
-        GameResultsView(gameState: gameState) {
+        GameResultsView(gameState: gameState, artist: artist) {
             // Play again
             gameState.startNewGame()
             gameHasBeenSaved = false
@@ -563,7 +591,7 @@ struct GameView: View {
               let currentSong = gameState.currentSong else { return }
         
         let isCorrect = guess.id == currentSong.id
-        gameState.submitGuess(guess.attributes.name, isCorrect: isCorrect)
+        gameState.submitGuess(guess.attributes.name, isCorrect: isCorrect, guessedSong: guess)
     }
     
     private func nextSong() {

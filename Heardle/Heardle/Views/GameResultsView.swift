@@ -2,8 +2,11 @@ import SwiftUI
 
 struct GameResultsView: View {
     let gameState: GameState
+    let artist: Artist
     let onPlayAgain: () -> Void
     let onDismiss: () -> Void
+    
+    @State private var showingReview = false
     
     var body: some View {
         VStack(spacing: 30) {
@@ -85,6 +88,12 @@ struct GameResultsView: View {
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 
+                Button("Review Game") {
+                    showingReview = true
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+                
                 Button("Change Artist") {
                     onDismiss()
                 }
@@ -100,6 +109,9 @@ struct GameResultsView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .sheet(isPresented: $showingReview) {
+            GameReviewView(gameState: gameState, artist: artist)
+        }
     }
     
     private func shareResults() {
@@ -169,6 +181,7 @@ struct StatCardView: View {
     
     return GameResultsView(
         gameState: gameState,
+        artist: Artist.example,
         onPlayAgain: {},
         onDismiss: {}
     )

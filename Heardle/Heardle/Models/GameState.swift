@@ -1,4 +1,43 @@
 import Foundation
+import SwiftUI
+
+// Individual song result for game review
+struct SongResult: Identifiable {
+    let id = UUID()
+    let song: Song
+    let isCorrect: Bool
+    let guessedSong: Song?
+    let guessedName: String?
+    let attemptsUsed: Int
+    let guessTime: TimeInterval
+    let pointsEarned: Int
+    let bonusPoints: Int
+    let wasSkipped: Bool
+    
+    var totalPoints: Int {
+        pointsEarned + bonusPoints
+    }
+    
+    var resultText: String {
+        if wasSkipped {
+            return "Skipped"
+        } else if isCorrect {
+            return "Correct"
+        } else {
+            return "Incorrect"
+        }
+    }
+    
+    var resultColor: Color {
+        if wasSkipped {
+            return .orange
+        } else if isCorrect {
+            return .green
+        } else {
+            return .red
+        }
+    }
+}
 
 @Observable
 class GameState {
@@ -18,6 +57,9 @@ class GameState {
     var timeBonus: Bool = false
     var perfectGame: Bool = true
     var selectedDifficulty: Song.Difficulty = .medium
+    
+    // Song results for game review
+    var songResults: [SongResult] = []
     
     // Game phases
     enum GamePhase {
@@ -79,6 +121,7 @@ class GameState {
         perfectGame = true
         gamePhase = .setup
         feedback = FeedbackState()
+        songResults = []
     }
     
     func startNewRound(with song: Song) {
@@ -106,7 +149,7 @@ class GameState {
         return (finalBasePoints, bonusPoints, timeBonus)
     }
     
-    func submitGuess(_ guess: String, isCorrect: Bool) {
+    func submitGuess(_ guess: String, isCorrect: Bool, guessedSong: Song? = nil) {
         let guessTime = Date().timeIntervalSince(roundStartTime)
         let (basePoints, bonusPoints, timeBonus) = calculateScore(
             for: guessAttempts,
@@ -130,6 +173,22 @@ class GameState {
         totalGuesses += 1
         songsCompleted += 1
         
+        // Record song result for review
+        if let song = currentSong {
+            let songResult = SongResult(
+                song: song,
+                isCorrect: isCorrect,
+                guessedSong: guessedSong,
+                guessedName: isCorrect ? song.attributes.name : guess,
+                attemptsUsed: guessAttempts + 1,
+                guessTime: guessTime,
+                pointsEarned: basePoints,
+                bonusPoints: bonusPoints,
+                wasSkipped: false
+            )
+            songResults.append(songResult)
+        }
+        
         feedback = FeedbackState(
             show: true,
             isCorrect: isCorrect,
@@ -151,6 +210,22 @@ class GameState {
             streak = 0
             songsCompleted += 1
             perfectGame = false
+            
+            // Record skipped song result
+            if let song = currentSong {
+                let songResult = SongResult(
+                    song: song,
+                    isCorrect: false,
+                    guessedSong: nil,
+                    guessedName: nil,
+                    attemptsUsed: 5, // Max attempts used
+                    guessTime: Date().timeIntervalSince(roundStartTime),
+                    pointsEarned: 0,
+                    bonusPoints: 0,
+                    wasSkipped: true
+                )
+                songResults.append(songResult)
+            }
             
             feedback = FeedbackState(
                 show: true,
