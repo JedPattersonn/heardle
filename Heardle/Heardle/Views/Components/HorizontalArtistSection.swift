@@ -182,30 +182,3 @@ struct HeroArtistCard: View {
         .padding(.horizontal)
     }
 }
-
-#Preview {
-    ScrollView {
-        VStack(spacing: 24) {
-            HeroArtistCard(artist: PopularArtists.featured.first!) {
-                print("Hero tapped")
-            }
-            
-            HorizontalArtistSection(
-                title: "Featured Artists",
-                artists: Array(PopularArtists.featured.prefix(6)),
-                colorScheme: .blue
-            ) { artist in
-                print("Selected: \(artist.name)")
-            }
-            
-            HorizontalArtistSection(
-                title: "Trending Now",
-                artists: Array(PopularArtists.trending.prefix(6)),
-                colorScheme: .purple
-            ) { artist in
-                print("Selected: \(artist.name)")
-            }
-        }
-        .padding(.vertical)
-    }
-}

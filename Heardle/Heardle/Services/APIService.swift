@@ -81,6 +81,31 @@ class APIService {
         }
     }
     
+    // MARK: - Artists Categories
+    func fetchArtistCategories() async throws -> [ArtistCategory] {
+        guard let url = URL(string: "\(baseURL)/api/artists/categories") else {
+            throw APIError.invalidURL
+        }
+        
+        do {
+            let (data, response) = try await session.data(from: url)
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 else {
+                throw APIError.invalidResponse
+            }
+            
+            let categories = try JSONDecoder().decode([ArtistCategory].self, from: data)
+            return categories
+        } catch let error as DecodingError {
+            print("Decoding error: \(error)")
+            throw APIError.decodingError
+        } catch {
+            print("Network error: \(error)")
+            throw APIError.networkError(error.localizedDescription)
+        }
+    }
+    
     // MARK: - Helper Methods
     func filterSongs(_ songs: [Song], by difficulty: Song.Difficulty) -> [Song] {
         switch difficulty {

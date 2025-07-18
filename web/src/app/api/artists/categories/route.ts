@@ -30,6 +30,7 @@ export async function GET() {
       
       return {
         title: formatCategoryTitle(cat.category || 'uncategorized'),
+        category: cat.category || 'uncategorized',
         artists: artistList.map((artist: any) => ({
           ...artist,
           displayGenres: (artist.genres || []).slice(0, 2).join(", "),
@@ -37,9 +38,26 @@ export async function GET() {
       };
     });
 
-    // Set appropriate cache headers
+    // Sort categories in the desired order (most likely to be wanted by users)
+    const categoryOrder = ['trending', 'featured', 'pop', 'hip-hop', 'rock', 'classics', 'r&b', 'country', 'electronic', 'jazz'];
+    categories.sort((a, b) => {
+      const aIndex = categoryOrder.indexOf(a.category.toLowerCase());
+      const bIndex = categoryOrder.indexOf(b.category.toLowerCase());
+      
+      // If both categories are in the order array, sort by their position
+      if (aIndex !== -1 && bIndex !== -1) {
+        return aIndex - bIndex;
+      }
+      // If only one is in the order array, prioritize it
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+      // If neither is in the order array, sort alphabetically
+      return a.title.localeCompare(b.title);
+    });
+
+    // No cache headers for mobile - always fetch fresh data
     const response = NextResponse.json(categories);
-    response.headers.set('Cache-Control', 'public, max-age=600'); // 10 minutes
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     
     return response;
   } catch (error) {

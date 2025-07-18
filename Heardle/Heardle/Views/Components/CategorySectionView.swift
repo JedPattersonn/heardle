@@ -214,26 +214,3 @@ struct FeaturedArtistCardView: View {
         .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 2)
     }
 }
-
-#Preview {
-    ScrollView {
-        VStack(spacing: 24) {
-            CategorySectionView(
-                title: "Featured Artists",
-                artists: Array(PopularArtists.featured.prefix(4)),
-                colorScheme: .blue
-            ) { artist in
-                print("Selected: \(artist.name)")
-            }
-            
-            CategorySectionView(
-                title: "Trending Now",
-                artists: Array(PopularArtists.trending.prefix(6)),
-                colorScheme: .purple
-            ) { artist in
-                print("Selected: \(artist.name)")
-            }
-        }
-        .padding()
-    }
-}

@@ -10,6 +10,7 @@ struct HomeView: View {
     @State private var showingSearch = false
     @State private var showingWelcome = !UserDefaults.standard.bool(forKey: "hasSeenWelcome")
     @State private var searchTask: Task<Void, Never>?
+    @State private var popularArtists = PopularArtists()
     
     private let apiService = APIService.shared
     
@@ -22,17 +23,23 @@ struct HomeView: View {
                 // Main content
                 if showingSearch {
                     searchContent
+                } else if popularArtists.isLoading {
+                    loadingView
+                } else if let error = popularArtists.error {
+                    errorView(error)
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 20) {
                             // Hero section
-                            HeroArtistCard(artist: PopularArtists.heroArtist) { 
-                                selectArtist(PopularArtists.heroArtist)
+                            if let heroArtist = popularArtists.heroArtist {
+                                HeroArtistCard(artist: heroArtist) { 
+                                    selectArtist(heroArtist)
+                                }
+                                .padding(.top, 8)
                             }
-                            .padding(.top, 8)
                             
                             // Horizontal sections
-                            ForEach(Array(PopularArtists.allCategories.enumerated()), id: \.offset) { index, category in
+                            ForEach(Array(popularArtists.categories.enumerated()), id: \.offset) { index, category in
                                 HorizontalArtistSection(
                                     title: category.title,
                                     artists: category.artists,
@@ -45,6 +52,9 @@ struct HomeView: View {
                             // Bottom spacing
                             Color.clear.frame(height: 20)
                         }
+                    }
+                    .refreshable {
+                        await popularArtists.loadCategories()
                     }
                 }
             }
@@ -62,6 +72,11 @@ struct HomeView: View {
                     .onDisappear {
                         UserDefaults.standard.set(true, forKey: "hasSeenWelcome")
                     }
+            }
+            .onAppear {
+                Task {
+                    await popularArtists.loadCategories()
+                }
             }
         }
     }
@@ -210,6 +225,52 @@ struct HomeView: View {
                 .padding()
                 Spacer()
             }
+        }
+    }
+    
+    // Loading view
+    private var loadingView: some View {
+        VStack(spacing: 20) {
+            Spacer()
+            
+            ProgressView()
+                .scaleEffect(1.5)
+            
+            Text("Loading artists...")
+                .font(.headline)
+                .foregroundStyle(.secondary)
+            
+            Spacer()
+        }
+    }
+    
+    // Error view
+    private func errorView(_ error: String) -> some View {
+        VStack(spacing: 20) {
+            Spacer()
+            
+            Image(systemName: "wifi.slash")
+                .font(.system(size: 50))
+                .foregroundStyle(.red)
+            
+            Text("Failed to load artists")
+                .font(.headline)
+                .fontWeight(.semibold)
+            
+            Text(error)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+            
+            Button("Retry") {
+                Task {
+                    await popularArtists.loadCategories()
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            
+            Spacer()
         }
     }
     
