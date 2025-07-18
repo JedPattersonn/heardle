@@ -11,6 +11,8 @@ struct GameView: View {
     @State private var loadError: String?
     @State private var selectedGuess: Song?
     @State private var showingGuessPicker = false
+    @State private var historyManager = GameHistoryManager()
+    @State private var gameHasBeenSaved = false
     
     private let apiService = APIService.shared
     private let audioService = AudioService.shared
@@ -43,6 +45,7 @@ struct GameView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if gameState.gamePhase != .setup {
                         Button("End Game") {
+                            saveGameIfNeeded()
                             onDismiss()
                         }
                     }
@@ -56,6 +59,7 @@ struct GameView: View {
             Task {
                 await audioService.stop()
             }
+            saveGameIfNeeded()
         }
     }
     
@@ -476,13 +480,27 @@ struct GameView: View {
         GameResultsView(gameState: gameState) {
             // Play again
             gameState.startNewGame()
+            gameHasBeenSaved = false
             startGame()
         } onDismiss: {
             onDismiss()
         }
+        .onAppear {
+            // Save game record when results appear (if not already saved)
+            saveGameIfNeeded()
+        }
     }
     
     // MARK: - Methods
+    private func saveGameIfNeeded() {
+        // Only save if the game has started and hasn't been saved yet
+        guard !gameHasBeenSaved && gameState.gamePhase != .setup else { return }
+        
+        let gameDuration = Date().timeIntervalSince(gameState.gameStartTime)
+        historyManager.saveGameRecord(gameState, artist: artist, gameDuration: gameDuration)
+        gameHasBeenSaved = true
+    }
+    
     private func loadSongs() {
         isLoadingSongs = true
         loadError = nil
@@ -506,6 +524,9 @@ struct GameView: View {
     private func startGame() {
         let filteredSongs = apiService.filterSongs(availableSongs, by: gameState.selectedDifficulty)
         guard !filteredSongs.isEmpty else { return }
+        
+        // Reset the save flag for new game
+        gameHasBeenSaved = false
         
         let randomSong = filteredSongs.randomElement()!
         gameState.startNewRound(with: randomSong)

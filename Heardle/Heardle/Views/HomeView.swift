@@ -11,6 +11,7 @@ struct HomeView: View {
     @State private var showingWelcome = !UserDefaults.standard.bool(forKey: "hasSeenWelcome")
     @State private var searchTask: Task<Void, Never>?
     @State private var popularArtists = PopularArtists()
+    @State private var showingScoreboard = false
     
     private let apiService = APIService.shared
     
@@ -73,6 +74,9 @@ struct HomeView: View {
                         UserDefaults.standard.set(true, forKey: "hasSeenWelcome")
                     }
             }
+            .sheet(isPresented: $showingScoreboard) {
+                ScoreboardView()
+            }
             .onAppear {
                 Task {
                     await popularArtists.loadCategories()
@@ -104,22 +108,33 @@ struct HomeView: View {
                 
                 Spacer()
                 
-                // Search icon
-                Button {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        showingSearch.toggle()
-                        if !showingSearch {
-                            searchText = ""
-                            searchResults = []
-                            searchError = nil
-                        }
+                HStack(spacing: 16) {
+                    // Scoreboard icon
+                    Button {
+                        showingScoreboard = true
+                    } label: {
+                        Image(systemName: "trophy.fill")
+                            .font(.title3)
+                            .foregroundStyle(.yellow)
                     }
-                } label: {
-                    Image(systemName: showingSearch ? "xmark" : "magnifyingglass")
-                        .font(.title3)
-                        .foregroundStyle(.primary)
+                    
+                    // Search icon
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            showingSearch.toggle()
+                            if !showingSearch {
+                                searchText = ""
+                                searchResults = []
+                                searchError = nil
+                            }
+                        }
+                    } label: {
+                        Image(systemName: showingSearch ? "xmark" : "magnifyingglass")
+                            .font(.title3)
+                            .foregroundStyle(.primary)
+                    }
+                    .animation(.easeInOut(duration: 0.2), value: showingSearch)
                 }
-                .animation(.easeInOut(duration: 0.2), value: showingSearch)
             }
             .padding(.horizontal)
             .padding(.top, 8)
