@@ -24,13 +24,12 @@ export async function GET() {
 
     // Transform the data into the expected format
     const categories = categorizedArtists.map((cat) => {
-      const artistList = typeof cat.artists === 'string' 
-        ? JSON.parse(cat.artists) 
-        : cat.artists;
-      
+      const artistList =
+        typeof cat.artists === "string" ? JSON.parse(cat.artists) : cat.artists;
+
       return {
-        title: formatCategoryTitle(cat.category || 'uncategorized'),
-        category: cat.category || 'uncategorized',
+        title: formatCategoryTitle(cat.category || "uncategorized"),
+        category: cat.category || "uncategorized",
         artists: artistList.map((artist: any) => ({
           ...artist,
           displayGenres: (artist.genres || []).slice(0, 2).join(", "),
@@ -39,11 +38,22 @@ export async function GET() {
     });
 
     // Sort categories in the desired order (most likely to be wanted by users)
-    const categoryOrder = ['trending', 'featured', 'pop', 'hip-hop', 'rock', 'classics', 'r&b', 'country', 'electronic', 'jazz'];
+    const categoryOrder = [
+      "trending",
+      "featured",
+      "pop",
+      "hip-hop",
+      "country",
+      "rock",
+      "classics",
+      "r&b",
+      "electronic",
+      "jazz",
+    ];
     categories.sort((a, b) => {
       const aIndex = categoryOrder.indexOf(a.category.toLowerCase());
       const bIndex = categoryOrder.indexOf(b.category.toLowerCase());
-      
+
       // If both categories are in the order array, sort by their position
       if (aIndex !== -1 && bIndex !== -1) {
         return aIndex - bIndex;
@@ -57,8 +67,11 @@ export async function GET() {
 
     // No cache headers for mobile - always fetch fresh data
     const response = NextResponse.json(categories);
-    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-    
+    response.headers.set(
+      "Cache-Control",
+      "no-cache, no-store, must-revalidate"
+    );
+
     return response;
   } catch (error) {
     console.error("Failed to fetch categorized artists:", error);
@@ -71,19 +84,21 @@ export async function GET() {
 
 function formatCategoryTitle(category: string): string {
   const categoryMap: Record<string, string> = {
-    'featured': 'Featured Artists',
-    'trending': 'Trending Now',
-    'hip-hop': 'Hip-Hop & Rap',
-    'rock': 'Rock & Alternative',
-    'classics': 'Classics & Legends',
-    'pop': 'Pop',
-    'r&b': 'R&B',
-    'country': 'Country',
-    'electronic': 'Electronic',
-    'jazz': 'Jazz',
-    'uncategorized': 'Other Artists',
+    featured: "Featured Artists",
+    trending: "Trending Now",
+    "hip-hop": "Hip-Hop & Rap",
+    rock: "Rock & Alternative",
+    classics: "Classics & Legends",
+    pop: "Pop",
+    "r&b": "R&B",
+    country: "Country",
+    electronic: "Electronic",
+    jazz: "Jazz",
+    uncategorized: "Other Artists",
   };
 
-  return categoryMap[category.toLowerCase()] || 
-         category.charAt(0).toUpperCase() + category.slice(1);
+  return (
+    categoryMap[category.toLowerCase()] ||
+    category.charAt(0).toUpperCase() + category.slice(1)
+  );
 }
