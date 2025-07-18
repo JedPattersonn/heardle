@@ -30,6 +30,13 @@ export const presetArtists: Artist[] = [
     genres: ["pop", "r&b"],
   },
   {
+    id: "1446365464",
+    name: "Tate McRae",
+    genres: ["pop"],
+    imageUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages221/v4/69/10/f3/6910f3ee-2170-9449-3ba8-08e2c666bdde/ami-identity-11b6c33ddb521791b7ba1dd8c4dcf764-2025-02-21T03-18-10.653Z_cropped.png/300x300bb.jpg",
+  },
+  {
     id: "183313439",
     name: "Ed Sheeran",
     imageUrl:
