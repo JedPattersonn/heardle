@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import PostHogClient from "@/lib/posthog";
 import { randomUUID } from "crypto";
 import { track } from "@vercel/analytics/server";
+import { headers } from "next/headers";
 
 interface ArtistPageProps {
   params: Promise<{ id: string }>;
@@ -29,10 +30,16 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
     },
   });
 
-  await track("artist", {
-    artist_id: id,
-    artist_name: artist.name,
-  });
+  await track(
+    "artist",
+    {
+      artist_id: id,
+      artist_name: artist.name,
+    },
+    {
+      headers: await headers(),
+    }
+  );
 
   // Generate structured data for SEO
   const structuredData = {
