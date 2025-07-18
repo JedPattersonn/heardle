@@ -149,12 +149,54 @@ struct PopularArtists {
         )
     ]
     
+    // Hero artist for the main feature
+    static let heroArtist = featured.first!
+    
+    static let mostPopular: [Artist] = [
+        Artist(
+            id: "159260351",
+            name: "Taylor Swift",
+            imageUrl: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/3e/29/3e/3e293e9e-2c27-6782-a3d7-b6742c4e6e8e/pr_source.png/300x300bb.jpg",
+            genres: ["Pop", "Country"]
+        ),
+        Artist(
+            id: "1065981054",
+            name: "Billie Eilish",
+            imageUrl: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/c8/95/0b/c8950b4d-7b5c-8b1a-1c9b-8d8c8f8f8f8f/pr_source.png/300x300bb.jpg",
+            genres: ["Pop", "Alternative"]
+        ),
+        Artist(
+            id: "349593119",
+            name: "Drake",
+            imageUrl: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/8b/4a/9e/8b4a9e95-4b7c-8b1a-1c9b-8d8c8f8f8f8f/pr_source.png/300x300bb.jpg",
+            genres: ["Hip-Hop", "Rap"]
+        ),
+        Artist(
+            id: "1419227",
+            name: "Ariana Grande",
+            imageUrl: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5e/5d/88/5e5d888d-7c4b-8b1a-1c9b-8d8c8f8f8f8f/pr_source.png/300x300bb.jpg",
+            genres: ["Pop", "R&B"]
+        ),
+        Artist(
+            id: "73406786",
+            name: "The Weeknd",
+            imageUrl: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/6f/2c/9b/6f2c9b95-4b7c-8b1a-1c9b-8d8c8f8f8f8f/pr_source.png/300x300bb.jpg",
+            genres: ["R&B", "Pop"]
+        ),
+        Artist(
+            id: "1558933962",
+            name: "Olivia Rodrigo",
+            imageUrl: "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/9a/8c/7d/9a8c7d95-4b7c-8b1a-1c9b-8d8c8f8f8f8f/pr_source.png/300x300bb.jpg",
+            genres: ["Pop", "Alternative"]
+        )
+    ]
+    
     static let allCategories: [(title: String, artists: [Artist])] = [
-        ("Featured Artists", featured),
+        ("Most Popular", mostPopular),
         ("Trending Now", trending),
-        ("Hip-Hop", hiphop),
-        ("Rock", rock),
-        ("Classics", classics)
+        ("Hip-Hop & Rap", hiphop),
+        ("Rock & Alternative", rock),
+        ("Classics & Legends", classics)
     ]
 }
 

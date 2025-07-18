@@ -9,39 +9,52 @@ struct HomeView: View {
     @State private var showingGame = false
     @State private var showingSearch = false
     @State private var showingWelcome = !UserDefaults.standard.bool(forKey: "hasSeenWelcome")
+    @State private var searchTask: Task<Void, Never>?
     
     private let apiService = APIService.shared
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    headerSection
-                    searchButton
-                    
-                    if showingSearch {
-                        searchSection
-                        searchResultsSection
-                    } else {
-                        popularArtistsSection
+            VStack(spacing: 0) {
+                // Compact header
+                compactHeader
+                
+                // Main content
+                if showingSearch {
+                    searchContent
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 20) {
+                            // Hero section
+                            HeroArtistCard(artist: PopularArtists.heroArtist) { 
+                                selectArtist(PopularArtists.heroArtist)
+                            }
+                            .padding(.top, 8)
+                            
+                            // Horizontal sections
+                            ForEach(Array(PopularArtists.allCategories.enumerated()), id: \.offset) { index, category in
+                                HorizontalArtistSection(
+                                    title: category.title,
+                                    artists: category.artists,
+                                    colorScheme: PopularArtists.CategoryColor.color(for: index)
+                                ) { artist in
+                                    selectArtist(artist)
+                                }
+                            }
+                            
+                            // Bottom spacing
+                            Color.clear.frame(height: 20)
+                        }
                     }
                 }
-                .padding()
             }
-            .navigationTitle("Heardle")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarHidden(true)
             .navigationDestination(isPresented: $showingGame) {
                 if let artist = selectedArtist {
                     GameView(artist: artist) {
                         showingGame = false
                         selectedArtist = nil
                     }
-                }
-            }
-            .refreshable {
-                // Add pull-to-refresh for search results if needed
-                if !searchText.isEmpty {
-                    performSearch()
                 }
             }
             .fullScreenCover(isPresented: $showingWelcome) {
@@ -53,187 +66,149 @@ struct HomeView: View {
         }
     }
     
-    private var headerSection: some View {
-        VStack(spacing: 20) {
-            VStack(spacing: 16) {
-                // Animated music icon with gradient and pulse effect
-                ZStack {
-                    // Background pulsing circles
-                    ForEach(0..<3) { i in
-                        Circle()
-                            .fill(
-                                LinearGradient(
-                                    colors: [.blue, .purple],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .opacity(0.3 - Double(i) * 0.1)
-                            .frame(width: 100 + CGFloat(i * 20), height: 100 + CGFloat(i * 20))
-                            .scaleEffect(1.0 + Double(i) * 0.1)
-                            .animation(
-                                .easeInOut(duration: 2.0 + Double(i) * 0.5)
-                                .repeatForever(autoreverses: true),
-                                value: UUID()
-                            )
-                    }
-                    
-                    // Main circle with gradient
-                    Circle()
-                        .fill(
+    // Compact header like Spotify/Apple Music
+    private var compactHeader: some View {
+        VStack(spacing: 0) {
+            HStack {
+                // Small logo/icon
+                HStack(spacing: 8) {
+                    Image(systemName: "music.note.list")
+                        .font(.title2)
+                        .foregroundStyle(
                             LinearGradient(
                                 colors: [.blue, .purple],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(width: 100, height: 100)
-                        .shadow(color: .blue.opacity(0.3), radius: 10, x: 0, y: 5)
                     
-                    // Music icon with gentle rotation
-                    Image(systemName: "music.note.list")
-                        .font(.system(size: 45, weight: .light))
-                        .foregroundStyle(.white)
-                        .rotationEffect(.degrees(0))
-                        .animation(
-                            .easeInOut(duration: 4.0)
-                            .repeatForever(autoreverses: true),
-                            value: UUID()
-                        )
-                }
-                .onAppear {
-                    // Trigger animations
-                }
-                
-                VStack(spacing: 8) {
-                    Text("Welcome to Heardle!")
-                        .font(.title)
+                    Text("Heardle")
+                        .font(.title2)
                         .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.primary, .blue],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
-                    
-                    Text("Guess the song from short audio clips")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
                 }
-            }
-        }
-        .padding(.top, 20)
-    }
-    
-    private var searchButton: some View {
-        Button {
-            withAnimation(.easeInOut) {
-                showingSearch.toggle()
-                if !showingSearch {
-                    searchText = ""
-                    searchResults = []
-                    searchError = nil
-                }
-            }
-        } label: {
-            HStack {
-                Image(systemName: "magnifyingglass")
-                Text(showingSearch ? "Hide Search" : "Search for an artist")
-                Spacer()
-                Image(systemName: showingSearch ? "chevron.up" : "chevron.down")
-            }
-            .padding()
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
-            .contentShape(RoundedRectangle(cornerRadius: 12))
-        }
-        .buttonStyle(.plain)
-    }
-    
-    private var searchSection: some View {
-        VStack(spacing: 12) {
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(.secondary)
                 
-                TextField("Type artist name...", text: $searchText)
-                    .textFieldStyle(.plain)
-                    .onSubmit {
-                        performSearch()
-                    }
-                    .onChange(of: searchText) { _, newValue in
-                        if newValue.isEmpty {
+                Spacer()
+                
+                // Search icon
+                Button {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        showingSearch.toggle()
+                        if !showingSearch {
+                            searchText = ""
                             searchResults = []
                             searchError = nil
                         }
                     }
-                
-                if isSearching {
-                    ProgressView()
-                        .scaleEffect(0.8)
-                } else if !searchText.isEmpty {
-                    Button {
-                        searchText = ""
-                        searchResults = []
-                        searchError = nil
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
-                    }
+                } label: {
+                    Image(systemName: showingSearch ? "xmark" : "magnifyingglass")
+                        .font(.title3)
+                        .foregroundStyle(.primary)
                 }
+                .animation(.easeInOut(duration: 0.2), value: showingSearch)
             }
-            .padding()
-            .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 10))
+            .padding(.horizontal)
+            .padding(.top, 8)
+            .padding(.bottom, 12)
+            .background(.regularMaterial)
             
-            if let error = searchError {
-                Label(error, systemImage: "exclamationmark.triangle")
-                    .font(.caption)
-                    .foregroundStyle(.red)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            // Subtle divider
+            if showingSearch {
+                Divider()
+                    .transition(.opacity)
             }
         }
-        .transition(.move(edge: .top).combined(with: .opacity))
     }
     
-    private var searchResultsSection: some View {
-        Group {
-            if !searchResults.isEmpty {
-                VStack(alignment: .leading, spacing: 16) {
-                    Text("Search Results")
-                        .font(.title3)
-                        .fontWeight(.semibold)
+    // Search content view
+    private var searchContent: some View {
+        VStack(spacing: 0) {
+            // Search bar
+            VStack(spacing: 12) {
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundStyle(.secondary)
                     
-                    LazyVStack(spacing: 12) {
-                        ForEach(searchResults) { artist in
-                            ArtistRowView(artist: artist) {
-                                selectArtist(artist)
+                    TextField("Search artists...", text: $searchText)
+                        .textFieldStyle(.plain)
+                        .onSubmit {
+                            performSearch()
+                        }
+                        .onChange(of: searchText) { _, newValue in
+                            if newValue.isEmpty {
+                                searchResults = []
+                                searchError = nil
+                                searchTask?.cancel()
+                                isSearching = false
+                            } else {
+                                performDebouncedSearch(query: newValue)
                             }
+                        }
+                    
+                    if isSearching {
+                        ProgressView()
+                            .scaleEffect(0.8)
+                    } else if !searchText.isEmpty {
+                        Button {
+                            searchText = ""
+                            searchResults = []
+                            searchError = nil
+                            searchTask?.cancel()
+                            isSearching = false
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundStyle(.secondary)
                         }
                     }
                 }
+                .padding()
+                .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
+                
+                if let error = searchError {
+                    Label(error, systemImage: "exclamationmark.triangle")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            .padding()
+            
+            // Search results
+            if !searchResults.isEmpty {
+                List(searchResults) { artist in
+                    ArtistRowView(artist: artist) {
+                        selectArtist(artist)
+                    }
+                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                    .listRowSeparator(.hidden)
+                }
+                .listStyle(.plain)
             } else if !searchText.isEmpty && !isSearching {
+                Spacer()
                 ContentUnavailableView(
                     "No Artists Found",
                     systemImage: "person.crop.circle.badge.questionmark",
                     description: Text("Try searching for a different artist")
                 )
-                .frame(height: 200)
-            }
-        }
-    }
-    
-    private var popularArtistsSection: some View {
-        LazyVStack(spacing: 24) {
-            ForEach(Array(PopularArtists.allCategories.enumerated()), id: \.offset) { index, category in
-                CategorySectionView(
-                    title: category.title,
-                    artists: category.artists,
-                    colorScheme: PopularArtists.CategoryColor.color(for: index)
-                ) { artist in
-                    selectArtist(artist)
+                Spacer()
+            } else {
+                // Show popular searches or recent when no search text
+                Spacer()
+                VStack(spacing: 16) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 50))
+                        .foregroundStyle(.secondary)
+                    
+                    Text("Search for any artist")
+                        .font(.title3)
+                        .fontWeight(.medium)
+                    
+                    Text("Find your favorite artists and start playing Heardle!")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
                 }
+                .padding()
+                Spacer()
             }
         }
     }
@@ -243,23 +218,58 @@ struct HomeView: View {
         showingGame = true
     }
     
+    private func performDebouncedSearch(query: String) {
+        // Cancel the previous search task
+        searchTask?.cancel()
+        
+        // Create a new search task with debouncing
+        searchTask = Task {
+            // Wait for 500ms before searching
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            
+            // Check if task was cancelled
+            guard !Task.isCancelled else { return }
+            
+            // Perform the search
+            await performSearchInternal(query: query)
+        }
+    }
+    
     private func performSearch() {
         guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return
         }
         
-        isSearching = true
-        searchError = nil
+        // Cancel debounced search and search immediately
+        searchTask?.cancel()
         
         Task {
-            do {
-                let results = try await apiService.searchArtists(query: searchText)
-                await MainActor.run {
+            await performSearchInternal(query: searchText)
+        }
+    }
+    
+    private func performSearchInternal(query: String) async {
+        let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedQuery.isEmpty else { return }
+        
+        await MainActor.run {
+            isSearching = true
+            searchError = nil
+        }
+        
+        do {
+            let results = try await apiService.searchArtists(query: trimmedQuery)
+            await MainActor.run {
+                // Only update results if the query still matches current search text
+                if trimmedQuery == self.searchText.trimmingCharacters(in: .whitespacesAndNewlines) {
                     self.searchResults = results
                     self.isSearching = false
                 }
-            } catch {
-                await MainActor.run {
+            }
+        } catch {
+            await MainActor.run {
+                // Only update error if the query still matches current search text
+                if trimmedQuery == self.searchText.trimmingCharacters(in: .whitespacesAndNewlines) {
                     self.searchError = error.localizedDescription
                     self.isSearching = false
                 }

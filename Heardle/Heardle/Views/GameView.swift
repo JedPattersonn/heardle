@@ -260,22 +260,14 @@ struct GameView: View {
     
     // MARK: - Feedback View
     private var feedbackView: some View {
-        VStack(spacing: 24) {
-            FeedbackView(
-                isCorrect: gameState.feedback.isCorrect,
-                song: gameState.feedback.song,
-                points: gameState.feedback.points,
-                bonusPoints: gameState.feedback.bonusPoints,
-                guessTime: gameState.feedback.guessTime
-            )
-            
-            Button("Next Song") {
-                nextSong()
-            }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        FeedbackView(
+            isCorrect: gameState.feedback.isCorrect,
+            song: gameState.feedback.song,
+            points: gameState.feedback.points,
+            bonusPoints: gameState.feedback.bonusPoints,
+            guessTime: gameState.feedback.guessTime,
+            onNextSong: nextSong
+        )
     }
     
     // MARK: - Results View
