@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { PostHogProvider } from "../components/PostHogProvider";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -94,12 +95,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-        <Analytics />
-        <SpeedInsights />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <PostHogProvider>
+          {children}
+          <Analytics />
+          <SpeedInsights />
+        </PostHogProvider>
       </body>
     </html>
   );

@@ -66,15 +66,17 @@ export async function GET(request: Request) {
     const mobileOptimizedResults = results.map((artist: any) => ({
       ...artist,
       // Ensure we have a valid image URL for mobile
-      imageUrl: artist.imageUrl || `https://via.placeholder.com/300x300/ccc/999?text=${encodeURIComponent(artist.name)}`,
+      imageUrl:
+        artist.imageUrl ||
+        `https://via.placeholder.com/300x300/ccc/999?text=${encodeURIComponent(artist.name)}`,
       // Add simplified genres for mobile display
       displayGenres: artist.genres.slice(0, 2).join(", "),
     }));
 
     // Set appropriate cache headers for mobile
     const response = NextResponse.json(mobileOptimizedResults);
-    response.headers.set('Cache-Control', 'public, max-age=300'); // 5 minutes
-    
+    response.headers.set("Cache-Control", "public, max-age=300"); // 5 minutes
+
     return response;
   } catch (error) {
     console.error("Mobile artist search error:", error);
