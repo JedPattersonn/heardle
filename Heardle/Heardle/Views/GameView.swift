@@ -1,4 +1,5 @@
 import SwiftUI
+import PostHog
 
 struct GameView: View {
     let artist: Artist
@@ -322,6 +323,7 @@ struct GameView: View {
     
     private var startButton: some View {
         Button {
+            PostHogSDK.shared.capture("game_started", properties: ["artist_id": artist.id, "artist_name": artist.name, "mobile": true, "difficulty": gameState.selectedDifficulty.displayName])
             startGame()
         } label: {
             HStack(spacing: 12) {
