@@ -16,6 +16,13 @@ export const presetArtists: Artist[] = [
     genres: ["rap", "hip hop"],
   },
   {
+    id: "479756766",
+    name: "The Weeknd",
+    imageUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages221/v4/32/b8/4c/32b84c51-400b-d7ef-14b0-bb49065277b8/e551d134-ebe5-4a6d-b496-a26beceffdaa_ami-identity-777ad796f94973f081f3e54e4b81fcb1-2024-09-12T22-33-01.265Z_cropped.png/300x300bb.jpg",
+    genres: ["r&b", "pop"],
+  },
+  {
     id: "320569549",
     name: "Justin Bieber",
     imageUrl:
@@ -28,6 +35,13 @@ export const presetArtists: Artist[] = [
     imageUrl:
       "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages221/v4/dd/28/c7/dd28c79a-772f-7a3c-2ce6-20da85b62e54/a4e831ac-410f-4178-a957-cd60e0f3c406_ami-identity-759967e43150fe52efc34501d7c47ce8-2024-09-27T16-52-53.459Z_cropped.png/300x300bb.jpg",
     genres: ["pop", "folk pop"],
+  },
+  {
+    id: "1065981054",
+    name: "Billie Eilish",
+    imageUrl:
+      "https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages211/v4/e1/f3/6a/e1f36a60-9897-162d-3697-7501eeafbc3b/a1d41336-49bd-4212-8787-57547ca3f87e_ami-identity-ef10a72d4764d04743b17fa13520b756-2024-04-08T15-24-54.609Z_cropped.png/300x300bb.jpg",
+    genres: ["alternative"],
   },
   {
     id: "412778295",
