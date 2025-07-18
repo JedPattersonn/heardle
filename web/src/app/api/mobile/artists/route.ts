@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+import { db } from "@/db";
+import { artists } from "@/db/schema";
+import { eq, ilike, or } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 
 const TEAM_ID = process.env.APPLE_TEAM_ID!;
@@ -59,22 +62,63 @@ export async function GET(request: Request) {
   }
 
   try {
-    const token = await generateToken();
-    const results = await searchAppleMusic(query, token);
+    // First, search in our database for preset artists
+    const databaseResults = await db
+      .select()
+      .from(artists)
+      .where(
+        or(
+          ilike(artists.name, `%${query}%`),
+          ilike(artists.name, `${query}%`)
+        )
+      )
+      .limit(10);
 
-    // Add mobile-specific optimizations
-    const mobileOptimizedResults = results.map((artist: any) => ({
+    // Transform database results to mobile format
+    const databaseArtists = databaseResults.map((artist) => ({
+      id: artist.appleId,
+      name: artist.name,
+      imageUrl: artist.imageUrl,
+      genres: artist.genres || [],
+      displayGenres: (artist.genres || []).slice(0, 2).join(", "),
+      isPreset: true, // Mark as preset artist
+    }));
+
+    // If we have enough database results, return them
+    if (databaseArtists.length >= 5) {
+      const response = NextResponse.json(databaseArtists);
+      response.headers.set("Cache-Control", "public, max-age=300");
+      return response;
+    }
+
+    // Otherwise, also search Apple Music for additional results
+    const token = await generateToken();
+    const appleMusicResults = await searchAppleMusic(query, token);
+
+    // Filter out Apple Music results that are already in our database
+    const databaseAppleIds = new Set(databaseResults.map(a => a.appleId));
+    const filteredAppleMusicResults = appleMusicResults.filter(
+      (artist: any) => !databaseAppleIds.has(artist.id)
+    );
+
+    // Add mobile-specific optimizations to Apple Music results
+    const mobileOptimizedAppleResults = filteredAppleMusicResults.map((artist: any) => ({
       ...artist,
-      // Ensure we have a valid image URL for mobile
       imageUrl:
         artist.imageUrl ||
         `https://via.placeholder.com/300x300/ccc/999?text=${encodeURIComponent(artist.name)}`,
-      // Add simplified genres for mobile display
       displayGenres: artist.genres.slice(0, 2).join(", "),
+      isPreset: false, // Mark as non-preset artist
     }));
 
+    // Combine results - preset artists first, then Apple Music results
+    const combinedResults = [
+      ...databaseArtists,
+      ...mobileOptimizedAppleResults.slice(0, 20 - databaseArtists.length)
+    ];
+
     // Set appropriate cache headers for mobile
-    const response = NextResponse.json(mobileOptimizedResults);
+    const response = NextResponse.json(combinedResults);
     response.headers.set("Cache-Control", "public, max-age=300"); // 5 minutes
 
     return response;
