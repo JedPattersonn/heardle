@@ -4,7 +4,8 @@ import Foundation
 class APIService {
     static let shared = APIService()
     
-    private let baseURL = "http://localhost:3000" // Replace with your actual domain
+    // private let baseURL = "http://localhost:3000"
+    private let baseURL = "https://www.heardle.fun"
     private let session = URLSession.shared
     
     private init() {}

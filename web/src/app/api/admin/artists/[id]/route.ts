@@ -6,18 +6,15 @@ import { eq } from "drizzle-orm";
 // PUT /api/admin/artists/[id] - Update an artist
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body = await request.json();
     const { name, imageUrl, genres, category, sortOrder, isActive } = body;
-    const artistId = parseInt(params.id);
+    const artistId = parseInt((await params).id);
 
     if (isNaN(artistId)) {
-      return NextResponse.json(
-        { error: "Invalid artist ID" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid artist ID" }, { status: 400 });
     }
 
     const updatedArtist = await db
@@ -35,10 +32,7 @@ export async function PUT(
       .returning();
 
     if (updatedArtist.length === 0) {
-      return NextResponse.json(
-        { error: "Artist not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Artist not found" }, { status: 404 });
     }
 
     return NextResponse.json(updatedArtist[0]);
@@ -54,16 +48,13 @@ export async function PUT(
 // DELETE /api/admin/artists/[id] - Delete an artist
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const artistId = parseInt(params.id);
+    const artistId = parseInt((await params).id);
 
     if (isNaN(artistId)) {
-      return NextResponse.json(
-        { error: "Invalid artist ID" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid artist ID" }, { status: 400 });
     }
 
     const deletedArtist = await db
@@ -72,10 +63,7 @@ export async function DELETE(
       .returning();
 
     if (deletedArtist.length === 0) {
-      return NextResponse.json(
-        { error: "Artist not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Artist not found" }, { status: 404 });
     }
 
     return NextResponse.json({ message: "Artist deleted successfully" });
