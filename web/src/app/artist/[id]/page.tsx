@@ -3,6 +3,8 @@ import ArtistGameClient from "./ArtistGameClient";
 import { Artist } from "@/types";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import PostHogClient from "@/lib/posthog";
+import { randomUUID } from "crypto";
 
 interface ArtistPageProps {
   params: Promise<{ id: string }>;
@@ -15,6 +17,17 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
   if (!artist) {
     notFound();
   }
+
+  const posthog = PostHogClient();
+
+  posthog.capture({
+    event: "artistSelected",
+    distinctId: randomUUID(),
+    properties: {
+      artist_id: id,
+      artist_name: artist.name,
+    },
+  });
 
   // Generate structured data for SEO
   const structuredData = {
