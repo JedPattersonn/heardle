@@ -35,6 +35,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardHeader, CardContent } from "./ui/card";
 import Image from "next/image";
 import Confetti, { MiniConfetti } from "./ui/confetti";
+import posthog from "posthog-js";
+import { track } from "@vercel/analytics/react";
 
 interface GameProps {
   selectedArtist: Artist | null;
@@ -598,6 +600,16 @@ export default function Game({ selectedArtist, onGameEnd }: GameProps) {
   };
 
   const handleStartGame = () => {
+    posthog.capture("game_started", {
+      artist_id: selectedArtist?.id,
+      artist_name: selectedArtist?.name,
+    });
+
+    track("game_started", {
+      artist_id: selectedArtist?.id as string,
+      artist_name: selectedArtist?.name as string,
+    });
+
     setGameState((prev) => ({
       ...prev,
       gameStartTime: Date.now(),
