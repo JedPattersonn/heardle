@@ -120,15 +120,4 @@ class APIService {
     }
 }
 
-// MARK: - Mock Data for Development
-extension APIService {
-    static let mockArtists: [Artist] = [
-        Artist(id: "1", name: "Taylor Swift", imageUrl: "https://example.com/taylor.jpg", genres: ["Pop", "Country"]),
-        Artist(id: "2", name: "The Beatles", imageUrl: "https://example.com/beatles.jpg", genres: ["Rock", "Pop"]),
-        Artist(id: "3", name: "Billie Eilish", imageUrl: "https://example.com/billie.jpg", genres: ["Pop", "Alternative"])
-    ]
-    
-    static let mockSongs: [Song] = [
-        Song.example
-    ]
-}
+

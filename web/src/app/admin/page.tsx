@@ -48,6 +48,7 @@ interface DatabaseArtist {
 const CATEGORIES = [
   "featured",
   "trending",
+  "playlists",
   "hip-hop",
   "rock",
   "classics",

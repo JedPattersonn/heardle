@@ -1,5 +1,20 @@
 import SwiftUI
 
+// Helper to allow conditional shape types
+struct AnyShape: Shape {
+    private let _path: (CGRect) -> Path
+    
+    init<S: Shape>(_ shape: S) {
+        _path = { rect in
+            shape.path(in: rect)
+        }
+    }
+    
+    func path(in rect: CGRect) -> Path {
+        _path(rect)
+    }
+}
+
 struct HomeView: View {
     @State private var searchText = ""
     @State private var searchResults: [Artist] = []
@@ -363,33 +378,77 @@ struct ArtistRowView: View {
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: 16) {
-                // Artist image with subtle gradient border
+                // Artist/Playlist image with subtle gradient border
                 ZStack {
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: [.blue.opacity(0.3), .purple.opacity(0.3)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
+                    if artist.isPlaylist == true {
+                        // Square background for playlists
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(
+                                LinearGradient(
+                                    colors: [.blue.opacity(0.3), .purple.opacity(0.3)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
                             )
-                        )
-                        .frame(width: 64, height: 64)
+                            .frame(width: 64, height: 64)
+                    } else {
+                        // Circular background for artists
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [.blue.opacity(0.3), .purple.opacity(0.3)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 64, height: 64)
+                    }
                     
                     AsyncImage(url: URL(string: artist.imageUrl ?? "")) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                     } placeholder: {
-                        Circle()
-                            .fill(.quaternary)
-                            .overlay {
-                                Image(systemName: "person.circle.fill")
-                                    .font(.title2)
-                                    .foregroundStyle(.secondary)
-                            }
+                        if artist.isPlaylist == true {
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(.quaternary)
+                                .overlay {
+                                    Image(systemName: "music.note.list")
+                                        .font(.title2)
+                                        .foregroundStyle(.secondary)
+                                }
+                        } else {
+                            Circle()
+                                .fill(.quaternary)
+                                .overlay {
+                                    Image(systemName: "person.circle.fill")
+                                        .font(.title2)
+                                        .foregroundStyle(.secondary)
+                                }
+                        }
                     }
                     .frame(width: 58, height: 58)
-                    .clipShape(Circle())
+                    .clipShape(artist.isPlaylist == true ? AnyShape(RoundedRectangle(cornerRadius: 6)) : AnyShape(Circle()))
+                    
+                    // Playlist indicator
+                    if artist.isPlaylist == true {
+                        VStack {
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                Image(systemName: "music.note.list")
+                                    .font(.caption2)
+                                    .foregroundStyle(.white)
+                                    .padding(3)
+                                    .background(.blue, in: Circle())
+                                    .overlay(
+                                        Circle()
+                                            .stroke(.white, lineWidth: 1)
+                                    )
+                            }
+                        }
+                        .frame(width: 58, height: 58)
+                    }
                 }
                 
                 VStack(alignment: .leading, spacing: 6) {

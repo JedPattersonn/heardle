@@ -5,7 +5,7 @@ import { eq, asc, sql } from "drizzle-orm";
 
 export async function GET() {
   try {
-    // Get artists grouped by category
+    // Get artists grouped by category, including playlist flag
     const categorizedArtists = await db
       .select({
         category: artists.category,
@@ -14,7 +14,8 @@ export async function GET() {
             'id', ${artists.appleId},
             'name', ${artists.name}, 
             'imageUrl', ${artists.imageUrl},
-            'genres', ${artists.genres}
+            'genres', ${artists.genres},
+            'isPlaylist', ${artists.isPlaylist}
           ) ORDER BY ${artists.sortOrder}, ${artists.name}
         )`,
       })
@@ -41,6 +42,7 @@ export async function GET() {
     const categoryOrder = [
       "trending",
       "featured",
+      "playlists",
       "pop",
       "hip-hop",
       "country",
@@ -86,6 +88,7 @@ function formatCategoryTitle(category: string): string {
   const categoryMap: Record<string, string> = {
     featured: "Featured Artists",
     trending: "Trending Now",
+    playlists: "Playlists",
     "hip-hop": "Hip-Hop & Rap",
     rock: "Rock & Alternative",
     classics: "Classics & Legends",

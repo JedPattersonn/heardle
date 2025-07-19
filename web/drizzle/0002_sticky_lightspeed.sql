@@ -1,0 +1,1 @@
+DROP TABLE "genre_playlists" CASCADE;

@@ -25,7 +25,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { appleId, name, imageUrl, genres, category, sortOrder } = body;
+    const { appleId, name, imageUrl, genres, category, sortOrder, isPlaylist } = body;
 
     if (!appleId || !name) {
       return NextResponse.json(
@@ -43,12 +43,12 @@ export async function POST(request: Request) {
 
     if (existingArtist.length > 0) {
       return NextResponse.json(
-        { error: "Artist already exists in database" },
+        { error: "Artist/Playlist already exists in database" },
         { status: 409 }
       );
     }
 
-    // Insert new artist
+    // Insert new artist/playlist
     const newArtist = await db
       .insert(artists)
       .values({
@@ -58,6 +58,7 @@ export async function POST(request: Request) {
         genres: genres || [],
         category,
         sortOrder: sortOrder || 0,
+        isPlaylist: isPlaylist || false,
       })
       .returning();
 

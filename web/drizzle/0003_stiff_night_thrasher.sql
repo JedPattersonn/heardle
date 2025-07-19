@@ -1,0 +1,1 @@
+ALTER TABLE "artists" ADD COLUMN "is_playlist" boolean DEFAULT false;

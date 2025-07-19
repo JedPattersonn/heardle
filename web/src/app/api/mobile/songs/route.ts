@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { Song } from "@/types";
+import { db } from "@/db";
+import { artists } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 const TEAM_ID = process.env.APPLE_TEAM_ID!;
 const KEY_ID = process.env.APPLE_KEY_ID!;
@@ -21,6 +24,75 @@ async function generateToken() {
 }
 
 type Difficulty = "easy" | "medium" | "hard";
+
+async function fetchPlaylistSongs(
+  playlistId: string,
+  token: string
+): Promise<Song[]> {
+  // Fetch playlist tracks
+  const response = await fetch(
+    `https://api.music.apple.com/v1/catalog/us/playlists/${playlistId}/tracks?limit=100`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("Apple Music API error response:", errorText);
+    throw new Error(`Apple Music API error: ${response.statusText}`);
+  }
+
+  const result = await response.json();
+  const allSongs = result.data || [];
+  const uniqueSongs = new Map();
+
+  allSongs.forEach((song: any, index: number) => {
+    const uniqueKey = `${song.attributes.name.toLowerCase().trim()}-${song.attributes.artistName.toLowerCase().trim()}`;
+
+    if (!uniqueSongs.has(uniqueKey) && song.attributes.previews?.length > 0) {
+      let difficulty: Difficulty = "hard";
+      if (index < 20) {
+        difficulty = "easy";
+      } else if (index < 40) {
+        difficulty = "medium";
+      }
+
+      uniqueSongs.set(uniqueKey, {
+        ...song,
+        difficulty,
+      });
+    }
+  });
+
+  const mobileSongs = Array.from(uniqueSongs.values()).map(
+    (song: any): Song => ({
+      id: song.id,
+      difficulty: song.difficulty,
+      attributes: {
+        name: song.attributes.name,
+        artistName: song.attributes.artistName,
+        albumName: song.attributes.albumName,
+        artwork: {
+          url:
+            song.attributes.artwork?.url ||
+            "https://via.placeholder.com/300x300/ccc/999?text=Album",
+        },
+        durationInMillis: song.attributes.durationInMillis,
+        previews: song.attributes.previews || [],
+      },
+    })
+  );
+
+  // Filter out songs without valid preview URLs
+  return mobileSongs.filter(
+    (song) =>
+      song.attributes.previews.length > 0 &&
+      song.attributes.previews[0].url.startsWith("https://")
+  );
+}
 
 async function fetchArtistSongs(
   artistId: string,
@@ -122,8 +194,23 @@ export async function GET(request: Request) {
   }
 
   try {
+    // Check if this artistId is actually a playlist
+    const artistRecord = await db
+      .select()
+      .from(artists)
+      .where(eq(artists.appleId, artistId))
+      .limit(1);
+
     const token = await generateToken();
-    let songs = await fetchArtistSongs(artistId, token);
+    let songs: Song[];
+
+    if (artistRecord.length > 0 && artistRecord[0].isPlaylist) {
+      // Fetch playlist songs
+      songs = await fetchPlaylistSongs(artistId, token);
+    } else {
+      // Fetch artist songs
+      songs = await fetchArtistSongs(artistId, token);
+    }
 
     // Filter by difficulty if specified
     if (difficulty) {

@@ -1,5 +1,20 @@
 import SwiftUI
 
+//// Helper to allow conditional shape types
+//struct AnyShape: Shape {
+//    private let _path: (CGRect) -> Path
+//    
+//    init<S: Shape>(_ shape: S) {
+//        _path = { rect in
+//            shape.path(in: rect)
+//        }
+//    }
+//    
+//    func path(in rect: CGRect) -> Path {
+//        _path(rect)
+//    }
+//}
+
 struct HorizontalArtistSection: View {
     let title: String
     let artists: [Artist]
@@ -59,33 +74,77 @@ struct CompactArtistCard: View {
     var body: some View {
         Button(action: onTap) {
             VStack(spacing: 8) {
-                // Artist image with subtle gradient border
+                // Artist/Playlist image with subtle gradient border
                 ZStack {
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: colorScheme.gradient.map { $0.opacity(0.3) },
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
+                    if artist.isPlaylist == true {
+                        // Square background for playlists
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(
+                                LinearGradient(
+                                    colors: colorScheme.gradient.map { $0.opacity(0.3) },
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
                             )
-                        )
-                        .frame(width: 94, height: 94)
+                            .frame(width: 94, height: 94)
+                    } else {
+                        // Circular background for artists
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: colorScheme.gradient.map { $0.opacity(0.3) },
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 94, height: 94)
+                    }
                     
                     AsyncImage(url: URL(string: artist.imageUrl ?? "")) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                     } placeholder: {
-                        Circle()
-                            .fill(.quaternary)
-                            .overlay {
-                                Image(systemName: "person.circle.fill")
-                                    .font(.title2)
-                                    .foregroundStyle(.secondary)
-                            }
+                        if artist.isPlaylist == true {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(.quaternary)
+                                .overlay {
+                                    Image(systemName: "music.note.list")
+                                        .font(.title2)
+                                        .foregroundStyle(.secondary)
+                                }
+                        } else {
+                            Circle()
+                                .fill(.quaternary)
+                                .overlay {
+                                    Image(systemName: "person.circle.fill")
+                                        .font(.title2)
+                                        .foregroundStyle(.secondary)
+                                }
+                        }
                     }
                     .frame(width: 88, height: 88)
-                    .clipShape(Circle())
+                    .clipShape(artist.isPlaylist == true ? AnyShape(RoundedRectangle(cornerRadius: 8)) : AnyShape(Circle()))
+                    
+                    // Playlist indicator
+                    if artist.isPlaylist == true {
+                        VStack {
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                Image(systemName: "music.note.list")
+                                    .font(.caption)
+                                    .foregroundStyle(.white)
+                                    .padding(4)
+                                    .background(.blue, in: Circle())
+                                    .overlay(
+                                        Circle()
+                                            .stroke(.white, lineWidth: 1)
+                                    )
+                            }
+                        }
+                        .frame(width: 88, height: 88)
+                    }
                 }
                 
                 VStack(spacing: 4) {
@@ -131,6 +190,17 @@ struct HeroArtistCard: View {
                 } placeholder: {
                     Rectangle()
                         .fill(.quaternary)
+                        .overlay {
+                            if artist.isPlaylist == true {
+                                Image(systemName: "music.note.list")
+                                    .font(.system(size: 40))
+                                    .foregroundStyle(.secondary)
+                            } else {
+                                Image(systemName: "person.circle.fill")
+                                    .font(.system(size: 40))
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
                 }
                 .frame(height: 200)
                 .clipped()
@@ -144,6 +214,25 @@ struct HeroArtistCard: View {
                 
                 // Content overlay
                 VStack {
+                    // Playlist indicator at top right
+                    if artist.isPlaylist == true {
+                        HStack {
+                            Spacer()
+                            HStack(spacing: 4) {
+                                Image(systemName: "music.note.list")
+                                    .font(.caption)
+                                Text("Playlist")
+                                    .font(.caption)
+                                    .fontWeight(.medium)
+                            }
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(.blue.opacity(0.8), in: RoundedRectangle(cornerRadius: 8))
+                        }
+                        .padding()
+                    }
+                    
                     Spacer()
                     
                     HStack {

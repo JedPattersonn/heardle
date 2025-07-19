@@ -8,6 +8,27 @@
       "when": 1752875485744,
       "tag": "0000_early_arachne",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1752882729542,
+      "tag": "0001_clammy_paladin",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752891531628,
+      "tag": "0002_sticky_lightspeed",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1752891707887,
+      "tag": "0003_stiff_night_thrasher",
+      "breakpoints": true
     }
   ]
 }
