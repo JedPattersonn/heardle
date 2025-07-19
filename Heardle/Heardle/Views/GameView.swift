@@ -355,7 +355,15 @@ struct GameView: View {
     
     private var startButton: some View {
         Button {
-            PostHogSDK.shared.capture("game_started", properties: ["artist_id": artist.id, "artist_name": artist.name, "mobile": true, "difficulty": gameState.selectedDifficulty.displayName])
+            let userId = PostHogSDK.shared.getDistinctId()
+                        
+            PostHogSDK.shared.capture("game_started", properties: [
+                "artist_id": artist.id, 
+                "artist_name": artist.name, 
+                "mobile": true, 
+                "difficulty": gameState.selectedDifficulty.displayName,
+                "user_id": userId,
+            ])
             startGame()
         } label: {
             HStack(spacing: 12) {
@@ -611,11 +619,5 @@ struct GameView: View {
                 await playCurrentSong()
             }
         }
-    }
-}
-
-#Preview {
-    GameView(artist: Artist.example) {
-        print("Game dismissed")
     }
 }
