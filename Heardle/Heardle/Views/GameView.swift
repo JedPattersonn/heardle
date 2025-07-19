@@ -122,206 +122,157 @@ struct GameView: View {
     
     // MARK: - Setup View
     private var setupView: some View {
-        ScrollView {
-            VStack(spacing: 40) {
-                Spacer(minLength: 20)
-                
-                artistHeader
-                
-                VStack(spacing: 30) {
-                    gameInfoCard
-                    difficultySelector
-                    startButton
-                }
-                .padding(.horizontal, 24)
-                
-                Spacer(minLength: 40)
+        VStack(spacing: 32) {
+            Spacer()
+            
+            compactArtistHeader
+            
+            VStack(spacing: 24) {
+                compactDifficultySelector
+                startButton
             }
+            .padding(.horizontal, 24)
+            
+            Spacer()
         }
     }
     
-    private var artistHeader: some View {
-        VStack(spacing: 24) {
-            ZStack {
+    private var compactArtistHeader: some View {
+        VStack(spacing: 16) {
+            AsyncImage(url: URL(string: artist.imageUrl ?? "")) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
                 Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [.blue.opacity(0.3), .purple.opacity(0.3)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 180, height: 180)
-                    .blur(radius: 20)
-                
-                AsyncImage(url: URL(string: artist.imageUrl ?? "")) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Circle()
-                        .fill(.quaternary)
-                        .overlay {
-                            Image(systemName: "music.note")
-                                .font(.system(size: 50))
-                                .foregroundStyle(.secondary)
-                        }
-                }
-                .frame(width: 160, height: 160)
-                .clipShape(Circle())
-                .overlay(
-                    Circle()
-                        .stroke(
-                            LinearGradient(
-                                colors: [.white.opacity(0.8), .clear],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 3
-                        )
-                )
-                .shadow(color: .black.opacity(0.2), radius: 15, x: 0, y: 8)
+                    .fill(.quaternary)
+                    .overlay {
+                        Image(systemName: "music.note")
+                            .font(.system(size: 30))
+                            .foregroundStyle(.secondary)
+                    }
             }
+            .frame(width: 100, height: 100)
+            .clipShape(Circle())
+            .overlay(
+                Circle()
+                    .stroke(.white.opacity(0.8), lineWidth: 2)
+            )
+            .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
             
-            VStack(spacing: 12) {
-                HStack {
-                    Image(systemName: "music.note.list")
-                        .foregroundStyle(.blue)
-                        .font(.title3)
-                    
-                    Text("Ready to Play?")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.primary)
-                }
-                
+            VStack(spacing: 8) {
                 Text(artist.name)
-                    .font(.title2)
-                    .fontWeight(.semibold)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.primary)
+                    .multilineTextAlignment(.center)
+                
+                Text("Ready to play?")
+                    .font(.headline)
                     .foregroundStyle(.blue)
             }
+            
+            highScoreDisplay
         }
         .padding(.horizontal, 24)
     }
     
-    private var gameInfoCard: some View {
-        VStack(spacing: 16) {
-            HStack {
-                Image(systemName: "lightbulb.fill")
-                    .foregroundStyle(.yellow)
-                    .font(.title2)
-                
-                Text("How to Play")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                
-                Spacer()
-            }
-            
-            VStack(alignment: .leading, spacing: 12) {
-                HStack(alignment: .top) {
-                    Image(systemName: "1.circle.fill")
+    private var highScoreDisplay: some View {
+        let artistGames = historyManager.gamesForArtist(artist.id)
+        let highScore = artistGames.filter { $0.difficulty == gameState.selectedDifficulty }.map(\.score).max() ?? 0
+        let totalGames = artistGames.filter { $0.difficulty == gameState.selectedDifficulty }.count
+        
+        return Group {
+            if totalGames > 0 {
+                HStack(spacing: 12) {
+                    Image(systemName: "trophy.fill")
+                        .foregroundStyle(.yellow)
+                        .font(.caption)
+                    
+                    VStack(spacing: 2) {
+                        Text("High Score")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        
+                        Text("\(highScore)")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.primary)
+                    }
+                    
+                    Text("•")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                    
+                    VStack(spacing: 2) {
+                        Text("Games")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        
+                        Text("\(totalGames)")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.primary)
+                    }
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(.ultraThinMaterial)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(.quaternary.opacity(0.5), lineWidth: 1)
+                        )
+                )
+                .shadow(color: .black.opacity(0.02), radius: 2, x: 0, y: 1)
+            } else {
+                HStack(spacing: 8) {
+                    Image(systemName: "star.fill")
                         .foregroundStyle(.blue)
-                        .font(.title3)
+                        .font(.caption)
                     
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Listen to snippets")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                        Text("Hear short clips of \(artist.name)'s songs")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    Spacer()
+                    Text("First time playing!")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
-                
-                HStack(alignment: .top) {
-                    Image(systemName: "2.circle.fill")
-                        .foregroundStyle(.green)
-                        .font(.title3)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Guess the song")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                        Text("Type the song title as you recognize it")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    Spacer()
-                }
-                
-                HStack(alignment: .top) {
-                    Image(systemName: "3.circle.fill")
-                        .foregroundStyle(.orange)
-                        .font(.title3)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Clips get longer")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                        Text("Each attempt reveals more of the song")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    Spacer()
-                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(.blue.opacity(0.1))
+                )
             }
         }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.ultraThinMaterial)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(.quaternary, lineWidth: 1)
-                )
-        )
-        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
     }
     
-    private var difficultySelector: some View {
-        VStack(spacing: 20) {
-            HStack {
-                Image(systemName: "slider.horizontal.3")
-                    .foregroundStyle(.purple)
-                    .font(.title3)
-                
-                Text("Choose Difficulty")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                
-                Spacer()
-            }
+    private var compactDifficultySelector: some View {
+        VStack(spacing: 16) {
+            Text("Choose Difficulty")
+                .font(.title2)
+                .fontWeight(.semibold)
+                .foregroundStyle(.primary)
             
-            VStack(spacing: 16) {
-                Picker("Difficulty", selection: $gameState.selectedDifficulty) {
-                    ForEach(Song.Difficulty.allCases, id: \.self) { difficulty in
-                        Text(difficulty.displayName)
-                            .tag(difficulty)
-                    }
+            Picker("Difficulty", selection: $gameState.selectedDifficulty) {
+                ForEach(Song.Difficulty.allCases, id: \.self) { difficulty in
+                    Text(difficulty.displayName)
+                        .tag(difficulty)
                 }
-                .pickerStyle(.segmented)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(.quaternary.opacity(0.5))
-                        .padding(-4)
-                )
+            }
+            .pickerStyle(.segmented)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(.quaternary.opacity(0.3))
+                    .padding(-4)
+            )
+            
+            HStack(spacing: 8) {
+                difficultyIcon(for: gameState.selectedDifficulty)
                 
-                HStack {
-                    difficultyIcon(for: gameState.selectedDifficulty)
-                    
-                    Text(gameState.selectedDifficulty.description)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.leading)
-                    
-                    Spacer()
-                }
-                .padding(.horizontal, 8)
+                Text(gameState.selectedDifficulty.description)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
             }
         }
         .padding(20)
@@ -330,11 +281,12 @@ struct GameView: View {
                 .fill(.ultraThinMaterial)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(.quaternary, lineWidth: 1)
+                        .stroke(.quaternary.opacity(0.5), lineWidth: 1)
                 )
         )
-        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+        .shadow(color: .black.opacity(0.03), radius: 4, x: 0, y: 2)
     }
+    
     
     private func difficultyIcon(for difficulty: Song.Difficulty) -> some View {
         Group {
@@ -366,29 +318,24 @@ struct GameView: View {
             ])
             startGame()
         } label: {
-            HStack(spacing: 12) {
+            HStack(spacing: 16) {
                 Image(systemName: "play.fill")
-                    .font(.title2)
+                    .font(.title)
                 
                 Text("Start Game")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                
-                if !availableSongs.isEmpty {
-                    Image(systemName: "arrow.right")
-                        .font(.title3)
-                }
+                    .font(.title2)
+                    .fontWeight(.bold)
             }
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
-            .frame(height: 56)
+            .frame(height: 64)
             .background(
                 availableSongs.isEmpty ? 
                     LinearGradient(colors: [.gray, .gray], startPoint: .leading, endPoint: .trailing) :
                     LinearGradient(colors: [.blue, .purple], startPoint: .leading, endPoint: .trailing)
             )
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .shadow(color: availableSongs.isEmpty ? .clear : .blue.opacity(0.3), radius: 8, x: 0, y: 4)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .shadow(color: availableSongs.isEmpty ? .clear : .blue.opacity(0.4), radius: 12, x: 0, y: 6)
             .scaleEffect(availableSongs.isEmpty ? 0.95 : 1.0)
             .animation(.easeInOut(duration: 0.2), value: availableSongs.isEmpty)
         }
