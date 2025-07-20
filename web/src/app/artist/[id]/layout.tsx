@@ -84,9 +84,6 @@ export async function generateMetadata(props: {
         },
       ],
     },
-    verification: {
-      google: "your-google-verification-code",
-    },
   };
 }
 

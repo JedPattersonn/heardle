@@ -41,33 +41,8 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
     }
   );
 
-  // Generate structured data for SEO
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Game",
-    name: `${artist.name} Music Quiz`,
-    description: `Test your ${artist.name} music knowledge! Try to guess their songs from short clips. The faster you guess, the more points you earn!`,
-    genre: "Music Quiz Game",
-    gamePlatform: "Web Browser",
-    about: {
-      "@type": "MusicGroup",
-      name: artist.name,
-      genre: artist.genres,
-      image: artist.imageUrl,
-    },
-    provider: {
-      "@type": "Organization",
-      name: "Heardle.fun",
-      url: "https://www.heardle.fun",
-    },
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
       <div className="min-h-screen flex flex-col">
         <nav className="p-4">
           <div className="max-w-7xl mx-auto">
