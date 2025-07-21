@@ -137,7 +137,7 @@ struct GameResultsView: View {
         let perfectGameText = gameState.perfectGame && gameState.correctGuesses > 0 ? " 🌟 Perfect Game!" : ""
         
         return """
-        🎵 Just played Heardle!
+        🎵 Just played MusIQ!
         
         Score: \(gameState.score) points
         Correct: \(gameState.correctGuesses)

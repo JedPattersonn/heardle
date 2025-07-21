@@ -116,7 +116,7 @@ struct HomeView: View {
                             )
                         )
                     
-                    Text("Heardle")
+                    Text("MusIQ")
                         .font(.title2)
                         .fontWeight(.bold)
                 }
@@ -247,7 +247,7 @@ struct HomeView: View {
                         .font(.title3)
                         .fontWeight(.medium)
                     
-                    Text("Find your favorite artists and start playing Heardle!")
+                    Text("Find your favorite artists and start playing MusIQ!")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)

@@ -8,7 +8,7 @@ struct WelcomeView: View {
     private let steps = [
         WelcomeStep(
             icon: "music.note.list",
-            title: "Welcome to Heardle!",
+            title: "Welcome to MusIQ!",
             description: "The ultimate music guessing game where you identify songs from short audio clips.",
             color: .blue
         ),
