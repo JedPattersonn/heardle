@@ -12,6 +12,7 @@ import PostHog
 struct HeardleApp: App {
     
     init() {
+        #if !DEBUG
         let POSTHOG_API_KEY = "phc_vwqGy6ffsPbvBWsLeJ1MMca5pLREZEjWYCSD4t0hXdl"
         let POSTHOG_HOST = "https://us.i.posthog.com"
         let configuration = PostHogConfig(apiKey: POSTHOG_API_KEY, host: POSTHOG_HOST)
@@ -29,6 +30,7 @@ struct HeardleApp: App {
         }
         
         PostHogSDK.shared.identify(userID)
+        #endif
     }
     
     var body: some Scene {

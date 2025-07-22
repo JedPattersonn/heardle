@@ -23,7 +23,7 @@ struct HomeView: View {
     @State private var selectedArtist: Artist?
     @State private var showingGame = false
     @State private var showingSearch = false
-    @State private var showingWelcome = !UserDefaults.standard.bool(forKey: "hasSeenWelcome")
+    @State private var showFirstTimeHint = !UserDefaults.standard.bool(forKey: "hasPlayedBefore")
     @State private var searchTask: Task<Void, Never>?
     @State private var popularArtists = PopularArtists()
     @State private var showingScoreboard = false
@@ -46,12 +46,20 @@ struct HomeView: View {
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 20) {
+                            // Quick start section for first-time users
+                            if showFirstTimeHint {
+                                QuickStartCard {
+                                    showFirstTimeHint = false
+                                }
+                                .padding(.top, 8)
+                            }
+                            
                             // Hero section
                             if let heroArtist = popularArtists.heroArtist {
                                 HeroArtistCard(artist: heroArtist) { 
                                     selectArtist(heroArtist)
                                 }
-                                .padding(.top, 8)
+                                .padding(.top, showFirstTimeHint ? 12 : 8)
                             }
                             
                             // Horizontal sections
@@ -83,12 +91,6 @@ struct HomeView: View {
                     }
                 }
             }
-            .fullScreenCover(isPresented: $showingWelcome) {
-                WelcomeView(isPresented: $showingWelcome)
-                    .onDisappear {
-                        UserDefaults.standard.set(true, forKey: "hasSeenWelcome")
-                    }
-            }
             .sheet(isPresented: $showingScoreboard) {
                 ScoreboardView()
             }
@@ -100,42 +102,73 @@ struct HomeView: View {
         }
     }
     
-    // Compact header like Spotify/Apple Music
+    // Enhanced header inspired by Flighty's clean design
     private var compactHeader: some View {
         VStack(spacing: 0) {
             HStack {
-                // Small logo/icon
-                HStack(spacing: 8) {
-                    Image(systemName: "music.note.list")
-                        .font(.title2)
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.blue, .purple],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
+                // Enhanced logo with subtle animation
+                HStack(spacing: 10) {
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [.blue.opacity(0.2), .purple.opacity(0.1)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
                             )
-                        )
+                            .frame(width: 32, height: 32)
+                        
+                        Image(systemName: "waveform")
+                            .font(.title3)
+                            .fontWeight(.medium)
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.blue, .purple],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    }
                     
-                    Text("MusIQ")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("MusIQ")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.primary)
+                        
+                        if showFirstTimeHint {
+                            Text("Tap any artist to start!")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                                .transition(.opacity.combined(with: .scale(scale: 0.8)))
+                        }
+                    }
                 }
                 
                 Spacer()
                 
-                HStack(spacing: 16) {
-                    // Scoreboard icon
+                HStack(spacing: 18) {
+                    // Enhanced scoreboard button
                     Button {
                         showingScoreboard = true
                     } label: {
-                        Image(systemName: "trophy.fill")
-                            .font(.title3)
-                            .foregroundStyle(.yellow)
+                        ZStack {
+                            Circle()
+                                .fill(.yellow.opacity(0.1))
+                                .frame(width: 36, height: 36)
+                            
+                            Image(systemName: "trophy.fill")
+                                .font(.title3)
+                                .foregroundStyle(.yellow)
+                        }
                     }
+                    .scaleEffect(0.95)
+                    .animation(.spring(response: 0.3), value: showingScoreboard)
                     
-                    // Search icon
+                    // Enhanced search button
                     Button {
-                        withAnimation(.easeInOut(duration: 0.3)) {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             showingSearch.toggle()
                             if !showingSearch {
                                 searchText = ""
@@ -144,22 +177,32 @@ struct HomeView: View {
                             }
                         }
                     } label: {
-                        Image(systemName: showingSearch ? "xmark" : "magnifyingglass")
-                            .font(.title3)
-                            .foregroundStyle(.primary)
+                        ZStack {
+                            Circle()
+                                .fill(showingSearch ? .blue.opacity(0.15) : .clear)
+                                .frame(width: 36, height: 36)
+                            
+                            Image(systemName: showingSearch ? "xmark" : "magnifyingglass")
+                                .font(.title3)
+                                .fontWeight(.medium)
+                                .foregroundStyle(showingSearch ? .blue : .primary)
+                        }
                     }
-                    .animation(.easeInOut(duration: 0.2), value: showingSearch)
+                    .scaleEffect(showingSearch ? 1.05 : 1.0)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.7), value: showingSearch)
                 }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 20)
             .padding(.top, 8)
-            .padding(.bottom, 12)
-            .background(.regularMaterial)
+            .padding(.bottom, 16)
+            .background(.ultraThinMaterial)
             
-            // Subtle divider
+            // Enhanced divider
             if showingSearch {
-                Divider()
-                    .transition(.opacity)
+                Rectangle()
+                    .fill(.quaternary)
+                    .frame(height: 0.5)
+                    .transition(.opacity.combined(with: .scale(scale: 0.8)))
             }
         }
     }
@@ -307,6 +350,12 @@ struct HomeView: View {
     private func selectArtist(_ artist: Artist) {
         selectedArtist = artist
         showingGame = true
+        
+        // Mark that user has played before
+        if showFirstTimeHint {
+            UserDefaults.standard.set(true, forKey: "hasPlayedBefore")
+            showFirstTimeHint = false
+        }
     }
     
     private func performDebouncedSearch(query: String) {
@@ -501,6 +550,80 @@ struct ArtistRowView: View {
     }
 }
 
+// Quick start card for first-time users (Tripsy-inspired)
+struct QuickStartCard: View {
+    let onDismiss: () -> Void
+    @State private var animateWave = false
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            HStack {
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [.green.opacity(0.2), .blue.opacity(0.1)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 44, height: 44)
+                    
+                    // Animated waveform
+                    HStack(spacing: 2) {
+                        ForEach(0..<3) { index in
+                            RoundedRectangle(cornerRadius: 1)
+                                .fill(.green)
+                                .frame(width: 2, height: CGFloat.random(in: 8...16))
+                                .animation(
+                                    .easeInOut(duration: 0.6)
+                                    .repeatForever(autoreverses: true)
+                                    .delay(Double(index) * 0.1),
+                                    value: animateWave
+                                )
+                        }
+                    }
+                }
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("🎵 Ready to play?")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                    
+                    Text("Pick any artist below and guess songs from 1-second clips!")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                }
+                
+                Spacer()
+                
+                Button {
+                    withAnimation(.easeInOut) {
+                        onDismiss()
+                    }
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.tertiary)
+                        .font(.title3)
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 16)
+        .background(.green.opacity(0.05))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(.green.opacity(0.2), lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .padding(.horizontal, 16)
+        .onAppear {
+            animateWave = true
+        }
+    }
+}
+
 #Preview {
     HomeView()
 }
@@ -508,6 +631,13 @@ struct ArtistRowView: View {
 #Preview("Artist Row") {
     ArtistRowView(artist: Artist.example) {
         print("Artist selected")
+    }
+    .padding()
+}
+
+#Preview("Quick Start Card") {
+    QuickStartCard {
+        print("Dismissed")
     }
     .padding()
 }

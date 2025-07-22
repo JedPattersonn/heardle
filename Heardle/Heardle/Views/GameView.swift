@@ -307,6 +307,7 @@ struct GameView: View {
     
     private var startButton: some View {
         Button {
+            #if !DEBUG
             let userId = PostHogSDK.shared.getDistinctId()
                         
             PostHogSDK.shared.capture("game_started", properties: [
@@ -316,6 +317,7 @@ struct GameView: View {
                 "difficulty": gameState.selectedDifficulty.displayName,
                 "user_id": userId,
             ])
+            #endif
             startGame()
         } label: {
             HStack(spacing: 16) {
