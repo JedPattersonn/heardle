@@ -18,13 +18,13 @@ export function AppDownloadButton({
     posthog.capture("app_download_clicked", {
       location,
       app_store_url:
-        "https://apps.apple.com/app/musiq-guess-the-song/id6748839500",
+        "https://apps.apple.com/app/apple-store/id6748839500?pt=127292799&ct=Heardle.fun&mt=8",
     });
   };
 
   return (
     <Link
-      href="https://apps.apple.com/app/musiq-guess-the-song/id6748839500"
+      href="https://apps.apple.com/app/apple-store/id6748839500?pt=127292799&ct=Heardle.fun&mt=8"
       target="_blank"
       rel="noopener noreferrer"
       className={className}

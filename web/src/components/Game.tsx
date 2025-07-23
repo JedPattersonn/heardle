@@ -600,15 +600,12 @@ export default function Game({ selectedArtist, onGameEnd }: GameProps) {
   };
 
   const handleStartGame = () => {
-    posthog.capture("game_started", {
-      artist_id: selectedArtist?.id,
-      artist_name: selectedArtist?.name,
-    });
-
-    track("game_started", {
-      artist_id: selectedArtist?.id as string,
-      artist_name: selectedArtist?.name as string,
-    });
+    if (process.env.NODE_ENV === "production") {
+      posthog.capture("game_started", {
+        artist_id: selectedArtist?.id,
+        artist_name: selectedArtist?.name,
+      });
+    }
 
     setGameState((prev) => ({
       ...prev,

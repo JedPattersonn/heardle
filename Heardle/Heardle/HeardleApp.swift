@@ -16,6 +16,12 @@ struct HeardleApp: App {
         let POSTHOG_API_KEY = "phc_vwqGy6ffsPbvBWsLeJ1MMca5pLREZEjWYCSD4t0hXdl"
         let POSTHOG_HOST = "https://us.i.posthog.com"
         let configuration = PostHogConfig(apiKey: POSTHOG_API_KEY, host: POSTHOG_HOST)
+        configuration.sessionReplay = true
+        configuration.sessionReplayConfig.maskAllTextInputs = false
+        configuration.sessionReplayConfig.screenshotMode = true
+        configuration.captureScreenViews = true
+        configuration.captureApplicationLifecycleEvents = true
+
         PostHogSDK.shared.setup(configuration)
         
         let userDefaults = UserDefaults.standard
