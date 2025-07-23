@@ -2,6 +2,7 @@ import { presetArtists } from "@/data/preset-artists";
 import Link from "next/link";
 import HomePageClient from "./HomePageClient";
 import Image from "next/image";
+import { AppDownloadButton } from "@/components/AppDownloadButton";
 
 export default function Home() {
   // Generate structured data for SEO
@@ -55,19 +56,35 @@ export default function Home() {
                   Heardle.fun
                 </Link>
               </div>
-              <div className="hidden md:flex space-x-8">
-                <Link
-                  href="#how-to-play"
-                  className="text-muted-foreground hover:text-foreground"
+              <div className="flex items-center space-x-4">
+                {/* Mobile App CTA - shows only on mobile */}
+                <AppDownloadButton
+                  location="mobile_header"
+                  className="md:hidden bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
                 >
-                  How to Play
-                </Link>
-                <Link
-                  href="#popular-artists"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  Popular Artists
-                </Link>
+                  📱 Get App
+                </AppDownloadButton>
+
+                <div className="hidden md:flex space-x-8">
+                  <Link
+                    href="#how-to-play"
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    How to Play
+                  </Link>
+                  <Link
+                    href="#popular-artists"
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    Popular Artists
+                  </Link>
+                  <AppDownloadButton
+                    location="desktop_header"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  >
+                    📱 Download App
+                  </AppDownloadButton>
+                </div>
               </div>
             </div>
           </nav>
