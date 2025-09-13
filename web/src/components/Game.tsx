@@ -599,12 +599,30 @@ export default function Game({ selectedArtist, onGameEnd }: GameProps) {
     playCurrentSong();
   };
 
-  const handleStartGame = () => {
+  const handleStartGame = async () => {
+    const gameData = {
+      artist_id: selectedArtist?.id,
+      artist_name: selectedArtist?.name,
+    };
+
     if (process.env.NODE_ENV === "production") {
-      posthog.capture("game_started", {
-        artist_id: selectedArtist?.id,
-        artist_name: selectedArtist?.name,
+      posthog.capture("game_started", gameData);
+    }
+
+    // Send to internal analytics endpoint which will forward to pingr
+    try {
+      await fetch("/api/analytics", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          event: "game_started",
+          ...gameData,
+        }),
       });
+    } catch (error) {
+      console.error("Failed to send analytics:", error);
     }
 
     setGameState((prev) => ({
